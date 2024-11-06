@@ -3,6 +3,7 @@ import 'package:bookstore/theme/color.dart';
 import 'package:flutter/material.dart';
 
 import 'pages/home.dart';
+import 'startup/get_start.dart';
 
 void main() {
   runApp(MyApp());
@@ -14,12 +15,12 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      title: 'Flutter Demo',
+      title: 'Book Store',
       theme: ThemeData(
         brightness: Brightness.light,
         primaryColor: primary
       ),
-      home: Home(),
+      home: get_start(),
     );
   }
 }
