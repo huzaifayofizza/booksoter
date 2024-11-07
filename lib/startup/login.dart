@@ -1,6 +1,6 @@
 
 
-import 'package:bookstore/pages/home.dart';
+
 import 'package:bookstore/startup/signup.dart';
 import 'package:flutter/material.dart';
 import 'package:video_player/video_player.dart';
@@ -179,11 +179,11 @@ class _LoginPageState extends State<LoginPage> {
                             onTap: () {
                               if (_formKey.currentState!.validate()) {
                               
-                                Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                      builder: (context) => Home()),
-                                );
+                                // Navigator.push(
+                                //   context,
+                                //   MaterialPageRoute(
+                                //       builder: (context) => ()),
+                                // );
                               }
                             },
                             child: Container(
