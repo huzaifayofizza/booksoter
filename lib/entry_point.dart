@@ -17,7 +17,7 @@ class _EntryPointState extends State<EntryPoint> {
     DiscoverScreen(),
     BookmarkScreen(),
     // EmptyCartScreen(), // if Cart is empty
-    CartScreen(),
+   
     ProfileScreen(),
   ];
   int _currentIndex = 0;
