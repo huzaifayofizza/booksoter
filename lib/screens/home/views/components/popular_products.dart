@@ -50,6 +50,7 @@ class PopularProducts extends StatelessWidget {
                       arguments: index.isEven);
                 },
               ),
+              
             ),
           ),
         )

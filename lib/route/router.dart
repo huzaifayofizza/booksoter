@@ -1,3 +1,7 @@
+import 'package:bookstore/screens/product/views/orderPlaced.dart';
+// ignore: unused_import
+import 'package:bookstore/screens/admin_panel/Screen/BookInsertForm.dart';
+
 import 'package:flutter/material.dart';
 import 'package:bookstore/entry_point.dart';
 
@@ -135,10 +139,7 @@ Route<dynamic> generateRoute(RouteSettings settings) {
           return ProductDetailsScreen(isProductAvailable: isProductAvailable);
         },
       );
-    case productReviewsScreenRoute:
-      return MaterialPageRoute(
-        builder: (context) => const ProductReviewsScreen(),
-      );
+
     // case addReviewsScreenRoute:
     //   return MaterialPageRoute(
     //     builder: (context) => const AddReviewScreen(),
@@ -159,22 +160,7 @@ Route<dynamic> generateRoute(RouteSettings settings) {
     //   return MaterialPageRoute(
     //     builder: (context) => const SubDiscoverScreen(),
     //   );
-    case discoverScreenRoute:
-      return MaterialPageRoute(
-        builder: (context) => const DiscoverScreen(),
-      );
-    case onSaleScreenRoute:
-      return MaterialPageRoute(
-        builder: (context) => const OnSaleScreen(),
-      );
-    case kidsScreenRoute:
-      return MaterialPageRoute(
-        builder: (context) => const KidsScreen(),
-      );
-    case searchScreenRoute:
-      return MaterialPageRoute(
-        builder: (context) => const SearchScreen(),
-      );
+
     // case searchHistoryScreenRoute:
     //   return MaterialPageRoute(
     //     builder: (context) => const SearchHistoryScreen(),
@@ -199,10 +185,7 @@ Route<dynamic> generateRoute(RouteSettings settings) {
     //   return MaterialPageRoute(
     //     builder: (context) => const ChatScreen(),
     //   );
-    case userInfoScreenRoute:
-      return MaterialPageRoute(
-        builder: (context) => const UserInfoScreen(),
-      );
+
     // case currentPasswordScreenRoute:
     //   return MaterialPageRoute(
     //     builder: (context) => const CurrentPasswordScreen(),
@@ -211,22 +194,7 @@ Route<dynamic> generateRoute(RouteSettings settings) {
     //   return MaterialPageRoute(
     //     builder: (context) => const EditUserInfoScreen(),
     //   );
-    case notificationsScreenRoute:
-      return MaterialPageRoute(
-        builder: (context) => const NotificationsScreen(),
-      );
-    case noNotificationScreenRoute:
-      return MaterialPageRoute(
-        builder: (context) => const NoNotificationScreen(),
-      );
-    case enableNotificationScreenRoute:
-      return MaterialPageRoute(
-        builder: (context) => const EnableNotificationScreen(),
-      );
-    case notificationOptionsScreenRoute:
-      return MaterialPageRoute(
-        builder: (context) => const NotificationOptionsScreen(),
-      );
+
     // case selectLanguageScreenRoute:
     //   return MaterialPageRoute(
     //     builder: (context) => const SelectLanguageScreen(),
@@ -235,18 +203,11 @@ Route<dynamic> generateRoute(RouteSettings settings) {
     //   return MaterialPageRoute(
     //     builder: (context) => const NoAddressScreen(),
     //   );
-    case addressesScreenRoute:
-      return MaterialPageRoute(
-        builder: (context) => const AddressesScreen(),
-      );
+
     // case addNewAddressesScreenRoute:
     //   return MaterialPageRoute(
     //     builder: (context) => const AddNewAddressScreen(),
     //   );
-    case ordersScreenRoute:
-      return MaterialPageRoute(
-        builder: (context) => const OrdersScreen(),
-      );
     // case orderProcessingScreenRoute:
     //   return MaterialPageRoute(
     //     builder: (context) => const OrderProcessingScreen(),
@@ -271,22 +232,24 @@ Route<dynamic> generateRoute(RouteSettings settings) {
       return MaterialPageRoute(
         builder: (context) => const PreferencesScreen(),
       );
+    case OrderConfimScreenRoute:
+      return MaterialPageRoute(
+        builder: (context) => CartSummaryPage(),
+      );
+    case CheckoutScreenRoute:
+      return MaterialPageRoute(
+        builder: (context) => CheckoutPage(),
+      );
+    case orderPlacedScreenRoute:
+      return MaterialPageRoute(
+        builder: (context) => OrderConfirmationPage(),
+      );
+
     // case emptyPaymentScreenRoute:
     //   return MaterialPageRoute(
     //     builder: (context) => const EmptyPaymentScreen(),
     //   );
-    case emptyWalletScreenRoute:
-      return MaterialPageRoute(
-        builder: (context) => const EmptyWalletScreen(),
-      );
-    case walletScreenRoute:
-      return MaterialPageRoute(
-        builder: (context) => const WalletScreen(),
-      );
-    case cartScreenRoute:
-      return MaterialPageRoute(
-        builder: (context) => const CartScreen(),
-      );
+
     // case paymentMethodScreenRoute:
     //   return MaterialPageRoute(
     //     builder: (context) => const PaymentMethodScreen(),
@@ -299,6 +262,23 @@ Route<dynamic> generateRoute(RouteSettings settings) {
     //   return MaterialPageRoute(
     //     builder: (context) => const ThanksForOrderScreen(),
     //   );
+    case bookInsertFormScreenRoute:
+      return MaterialPageRoute(
+        builder: (context) => BookStoreAdmin(),
+      );
+    case bookViewScreenRoute:
+      return MaterialPageRoute(
+        builder: (context) => BookStoreView(),
+      );
+       case AdminUserAccountScreenRoute:
+      return MaterialPageRoute(
+        builder: (context) => AdminUserAccount(),
+      );
+      case AdminOrderManageSCreenRoute:
+      return MaterialPageRoute(
+        builder: (context) => AdminUserAccount(),
+      );
+      
     default:
       return MaterialPageRoute(
         // Make a screen for undefine
