@@ -3,6 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:bookstore/constants.dart';
 import 'package:bookstore/route/screen_export.dart';
+import 'package:bookstore/screens/admin_panel/Screen/BookInsertForm.dart'
+    show AddBookForm;
 
 class EntryPoint extends StatefulWidget {
   const EntryPoint({super.key});
@@ -12,13 +14,11 @@ class EntryPoint extends StatefulWidget {
 }
 
 class _EntryPointState extends State<EntryPoint> {
-  final List _pages = const [
-    HomeScreen(),
-    DiscoverScreen(),
-    BookmarkScreen(),
-    // EmptyCartScreen(), // if Cart is empty
-   
-    ProfileScreen(),
+  final List _pages = [
+    const HomeScreen(),
+    const BookmarkScreen(),
+    const ProfileScreen(),
+    AdminUserAccount(),
   ];
   int _currentIndex = 0;
 
@@ -120,21 +120,16 @@ class _EntryPointState extends State<EntryPoint> {
               label: "Shop",
             ),
             BottomNavigationBarItem(
-              icon: svgIcon("assets/icons/Category.svg"),
-              activeIcon:
-                  svgIcon("assets/icons/Category.svg", color: primaryColor),
-              label: "Discover",
-            ),
-            BottomNavigationBarItem(
               icon: svgIcon("assets/icons/Bookmark.svg"),
               activeIcon:
                   svgIcon("assets/icons/Bookmark.svg", color: primaryColor),
               label: "Bookmark",
             ),
             BottomNavigationBarItem(
-              icon: svgIcon("assets/icons/Bag.svg"),
-              activeIcon: svgIcon("assets/icons/Bag.svg", color: primaryColor),
-              label: "Cart",
+              icon: svgIcon("assets/icons/Profile.svg"),
+              activeIcon:
+                  svgIcon("assets/icons/Profile.svg", color: primaryColor),
+              label: "admmin Form",
             ),
             BottomNavigationBarItem(
               icon: svgIcon("assets/icons/Profile.svg"),

@@ -6,6 +6,8 @@ import 'package:bookstore/route/screen_export.dart';
 
 import 'components/best_sellers.dart';
 
+import 'components/most_popular.dart';
+import 'components/offer_carousel_and_categories.dart';
 import 'components/popular_products.dart';
 
 class HomeScreen extends StatelessWidget {
@@ -17,10 +19,9 @@ class HomeScreen extends StatelessWidget {
       body: SafeArea(
         child: CustomScrollView(
           slivers: [
+            const SliverToBoxAdapter(child: OffersCarouselAndCategories()),
+           
             const SliverToBoxAdapter(child: PopularProducts()),
-            const SliverPadding(
-              padding: EdgeInsets.symmetric(vertical: defaultPadding * 1.5),
-            ),
             SliverToBoxAdapter(
               child: Column(
                 children: [
@@ -39,6 +40,7 @@ class HomeScreen extends StatelessWidget {
                 ],
               ),
             ),
+           
             const SliverToBoxAdapter(child: BestSellers()),
             SliverToBoxAdapter(
               child: Column(
@@ -60,7 +62,7 @@ class HomeScreen extends StatelessWidget {
                 ],
               ),
             ),
-            const SliverToBoxAdapter(child: BestSellers()),
+            const SliverToBoxAdapter(child: MostPopular()),
           ],
         ),
       ),

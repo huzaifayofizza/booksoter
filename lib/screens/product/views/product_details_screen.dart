@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
-import 'package:bookstore/components/buy_full_ui_kit.dart';
+
 import 'package:bookstore/components/cart_button.dart';
 import 'package:bookstore/components/custom_modal_bottom_sheet.dart';
 import 'package:bookstore/components/product/product_card.dart';
 import 'package:bookstore/constants.dart';
-import 'package:bookstore/screens/product/views/product_returns_screen.dart';
+
 
 import 'package:bookstore/route/screen_export.dart';
 
@@ -67,43 +67,6 @@ class ProductDetailsScreen extends StatelessWidget {
                   "A cool gray cap in soft corduroy. Watch me.' By buying cotton products from Lindex, you’re supporting more responsibly...",
               rating: 4.4,
               numOfReviews: 126,
-            ),
-            ProductListTile(
-              svgSrc: "assets/icons/Product.svg",
-              title: "Product Details",
-              press: () {
-                customModalBottomSheet(
-                  context,
-                  height: MediaQuery.of(context).size.height * 0.92,
-                  child: const BuyFullKit(
-                      images: ["assets/screens/Product detail.png"]),
-                );
-              },
-            ),
-            ProductListTile(
-              svgSrc: "assets/icons/Delivery.svg",
-              title: "Shipping Information",
-              press: () {
-                customModalBottomSheet(
-                  context,
-                  height: MediaQuery.of(context).size.height * 0.92,
-                  child: const BuyFullKit(
-                    images: ["assets/screens/Shipping information.png"],
-                  ),
-                );
-              },
-            ),
-            ProductListTile(
-              svgSrc: "assets/icons/Return.svg",
-              title: "Returns",
-              isShowBottomBorder: true,
-              press: () {
-                customModalBottomSheet(
-                  context,
-                  height: MediaQuery.of(context).size.height * 0.92,
-                  child: const ProductReturnsScreen(),
-                );
-              },
             ),
             const SliverToBoxAdapter(
               child: Padding(
