@@ -5,7 +5,7 @@ import '../constants.dart';
 ElevatedButtonThemeData elevatedButtonThemeData = ElevatedButtonThemeData(
   style: ElevatedButton.styleFrom(
     padding: const EdgeInsets.all(defaultPadding),
-    backgroundColor: primaryColor,
+    backgroundColor: const Color.fromRGBO(123, 97, 255, 1),
     foregroundColor: Colors.white,
     minimumSize: const Size(double.infinity, 32),
     shape: const RoundedRectangleBorder(
