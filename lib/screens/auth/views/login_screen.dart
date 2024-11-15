@@ -30,7 +30,8 @@ class _LoginScreenState extends State<LoginScreen> {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
     final bool isLoggedIn = prefs.getBool('isLoggedIn') ?? false;
     if (isLoggedIn) {
-      Navigator.pushReplacementNamed(context, entryPointScreenRoute); // Go to entry point after login
+      Navigator.pushReplacementNamed(
+          context, entryPointScreenRoute); // Go to entry point after login
     }
   }
 
@@ -60,7 +61,8 @@ class _LoginScreenState extends State<LoginScreen> {
       final GoogleSignInAccount? googleUser = await _googleSignIn.signIn();
       if (googleUser == null) return;
 
-      final GoogleSignInAuthentication googleAuth = await googleUser.authentication;
+      final GoogleSignInAuthentication googleAuth =
+          await googleUser.authentication;
       final credential = GoogleAuthProvider.credential(
         accessToken: googleAuth.accessToken,
         idToken: googleAuth.idToken,
@@ -203,7 +205,7 @@ class _LoginScreenState extends State<LoginScreen> {
                           onTap: _signInWithEmailAndPassword,
                           child: Container(
                             padding: const EdgeInsets.symmetric(
-                                vertical: 14, horizontal: 60),
+                                vertical: 14, horizontal: 50),
                             decoration: BoxDecoration(
                               color: const Color.fromRGBO(123, 97, 255, 1),
                               borderRadius: BorderRadius.circular(8),
@@ -225,7 +227,7 @@ class _LoginScreenState extends State<LoginScreen> {
                           },
                           child: Container(
                             padding: const EdgeInsets.symmetric(
-                                vertical: 14, horizontal: 35),
+                                vertical: 14, horizontal: 25),
                             decoration: BoxDecoration(
                               color: const Color.fromARGB(255, 173, 173, 173),
                               borderRadius: BorderRadius.circular(8),
@@ -326,8 +328,8 @@ class _LoginScreenState extends State<LoginScreen> {
                         },
                         child: const Text(
                           "Create account",
-                          style: TextStyle(
-                              fontSize: 15, color: Color(0xFF7B61FF)),
+                          style:
+                              TextStyle(fontSize: 15, color: Color(0xFF7B61FF)),
                         ),
                       ),
                     ),
