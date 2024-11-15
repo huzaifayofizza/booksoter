@@ -17,7 +17,7 @@ Route<dynamic> generateRoute(RouteSettings settings) {
       );
     case passwordRecoveryScreenRoute:
       return MaterialPageRoute(
-        builder: (context) => const PasswordRecoveryScreen(),
+        builder: (context) =>  PasswordRecoveryScreen(),
       );
     case productDetailsScreenRoute:
       return MaterialPageRoute(
