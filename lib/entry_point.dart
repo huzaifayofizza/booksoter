@@ -123,19 +123,19 @@ class _EntryPointState extends State<EntryPoint> {
               icon: svgIcon("assets/icons/Bookmark.svg"),
               activeIcon:
                   svgIcon("assets/icons/Bookmark.svg", color: primaryColor),
-              label: "Bookmark",
-            ),
-            BottomNavigationBarItem(
-              icon: svgIcon("assets/icons/Profile.svg"),
-              activeIcon:
-                  svgIcon("assets/icons/Profile.svg", color: primaryColor),
-              label: "admmin Form",
+              label: "WishList",
             ),
             BottomNavigationBarItem(
               icon: svgIcon("assets/icons/Profile.svg"),
               activeIcon:
                   svgIcon("assets/icons/Profile.svg", color: primaryColor),
               label: "Profile",
+            ),
+            BottomNavigationBarItem(
+              icon: svgIcon("assets/icons/Profile.svg"),
+              activeIcon:
+                  svgIcon("assets/icons/Profile.svg", color: primaryColor),
+              label: "Admin",
             ),
           ],
         ),

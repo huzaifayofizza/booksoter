@@ -7,7 +7,7 @@ class PasswordRecoveryScreen extends StatelessWidget {
 
   Future<void> resetPassword(BuildContext context) async {
     final email = _emailController.text.trim(); // Trim whitespace
-
+ 
     // Validate email format
     if (!RegExp(r'^[^@]+@[^@]+\.[^@]+').hasMatch(email)) {
       ScaffoldMessenger.of(context).showSnackBar(
