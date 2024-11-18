@@ -1,3 +1,6 @@
+import 'package:bookstore/screens/admin_panel/Screen/AdminOrderManage.dart';
+
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -14,86 +17,211 @@ class LoginScreen extends StatefulWidget {
 }
 
 class _LoginScreenState extends State<LoginScreen> {
-  final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
-  final TextEditingController emailController = TextEditingController();
-  final TextEditingController passwordController = TextEditingController();
-  final GoogleSignIn _googleSignIn = GoogleSignIn();
+ final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
+final TextEditingController emailController = TextEditingController();
+final TextEditingController passwordController = TextEditingController();
+final GoogleSignIn _googleSignIn = GoogleSignIn();
 
-  @override
-  void initState() {
-    super.initState();
-    _checkLoginStatus();
-  }
+@override
+void initState() {
+  super.initState();
+  _checkLoginStatus();
+}
 
-  // Check if the user is already logged in
-  Future<void> _checkLoginStatus() async {
-    final SharedPreferences prefs = await SharedPreferences.getInstance();
-    final bool isLoggedIn = prefs.getBool('isLoggedIn') ?? false;
-    if (isLoggedIn) {
-      Navigator.pushReplacementNamed(
-          context, entryPointScreenRoute); // Go to entry point after login
+// Check if the user is already logged in
+Future<void> _checkLoginStatus() async {
+  final SharedPreferences prefs = await SharedPreferences.getInstance();
+  final bool isLoggedIn = prefs.getBool('isLoggedIn') ?? false;
+  if (isLoggedIn) {
+    final role = prefs.getString('role') ?? 'user';
+    if (role == 'admin') {
+             Navigator.pushReplacement(
+              context,
+              MaterialPageRoute(
+                  builder: (context) =>
+                      AdminOrderManage()), // Navigate to Admin Panel
+            );
+    } else {
+      Navigator.pushReplacementNamed(context, entryPointScreenRoute);
     }
   }
+}
 
-  // Email and Password Sign-In function
-  Future<void> _signInWithEmailAndPassword() async {
-    if (!_formKey.currentState!.validate()) return;
+// Email and Password Sign-In
+Future<void> _signInWithEmailAndPassword() async {
+  if (!_formKey.currentState!.validate()) return;
 
-    try {
-      await FirebaseAuth.instance.signInWithEmailAndPassword(
-        email: emailController.text.trim(),
-        password: passwordController.text.trim(),
-      );
+  try {
+    UserCredential userCredential = await FirebaseAuth.instance
+        .signInWithEmailAndPassword(
+      email: emailController.text.trim(),
+      password: passwordController.text.trim(),
+    );
 
-      // Save login status locally
+    User? user = userCredential.user;
+
+    if (user != null) {
+      if (!user.emailVerified) {
+        throw Exception("Please verify your email before logging in.");
+      }
+
+      // Fetch role from Firestore
+      final userDoc =
+          await FirebaseFirestore.instance.collection('users').doc(user.uid).get();
+      if (userDoc.exists) {
+        final role = userDoc.data()?['role'] ?? 'user';
+
+        // Save login status, UID, and role locally
+        final SharedPreferences prefs = await SharedPreferences.getInstance();
+        await prefs.setBool('isLoggedIn', true);
+        await prefs.setString('uid', user.uid);
+        await prefs.setString('role', role);
+
+        // Navigate based on role
+        if (role == 'admin') {
+                   Navigator.pushReplacement(
+              context,
+              MaterialPageRoute(
+                  builder: (context) =>
+                      AdminOrderManage()), // Navigate to Admin Panel
+            );
+        } else {
+          Navigator.pushReplacementNamed(context, entryPointScreenRoute);
+        }
+      } else {
+        throw Exception("User data not found in Firestore.");
+      }
+    }
+  } catch (error) {
+    _showErrorSnackBar(error.toString());
+  }
+}
+
+// Google Sign-In
+Future<void> _signInWithGoogle() async {
+  try {
+    final GoogleSignInAccount? googleUser = await _googleSignIn.signIn();
+    if (googleUser == null) return;
+
+    final GoogleSignInAuthentication googleAuth =
+        await googleUser.authentication;
+    final credential = GoogleAuthProvider.credential(
+      accessToken: googleAuth.accessToken,
+      idToken: googleAuth.idToken,
+    );
+
+    UserCredential userCredential =
+        await FirebaseAuth.instance.signInWithCredential(credential);
+    User? user = userCredential.user;
+
+    if (user != null) {
+      final uid = user.uid;
+
+      // Fetch role or create a default user document
+      final userDoc = FirebaseFirestore.instance.collection('users').doc(uid);
+      final userData = await userDoc.get();
+
+      if (!userData.exists) {
+        // Create default user data
+        await userDoc.set({
+          'email': user.email,
+          'uid': uid,
+          'role': 'user', // Default role
+          'createdAt': DateTime.now(),
+        });
+      }
+
+      final role = (await userDoc.get()).data()?['role'] ?? 'user';
+
+      // Save login status, UID, and role locally
       final SharedPreferences prefs = await SharedPreferences.getInstance();
       await prefs.setBool('isLoggedIn', true);
+      await prefs.setString('uid', uid);
+      await prefs.setString('role', role);
 
-      Navigator.pushReplacementNamed(context, entryPointScreenRoute);
-    } catch (error) {
-      print("Email Sign-In Error: $error");
+      // Navigate based on role
+      if (role == 'admin') {
+         Navigator.pushReplacement(
+              context,
+              MaterialPageRoute(
+                  builder: (context) =>
+                      AdminOrderManage()), // Navigate to Admin Panel
+            );
+      } else if (role == 'user') {
+        Navigator.pushReplacementNamed(context, entryPointScreenRoute);
+      } else {
+        throw Exception("Invalid user role: $role");
+      }
     }
+  } catch (error) {
+    _showErrorSnackBar('Google Sign-In Error: $error');
   }
+}
 
-  // Google Sign-In function
-  Future<void> _signInWithGoogle() async {
-    try {
-      final GoogleSignInAccount? googleUser = await _googleSignIn.signIn();
-      if (googleUser == null) return;
+// Anonymous Sign-In
+Future<void> _continueAsGuest() async {
+  try {
+    UserCredential userCredential =
+        await FirebaseAuth.instance.signInAnonymously();
+    User? user = userCredential.user;
 
-      final GoogleSignInAuthentication googleAuth =
-          await googleUser.authentication;
-      final credential = GoogleAuthProvider.credential(
-        accessToken: googleAuth.accessToken,
-        idToken: googleAuth.idToken,
-      );
+    if (user != null) {
+      final uid = user.uid;
 
-      await FirebaseAuth.instance.signInWithCredential(credential);
+      // Fetch role or create a default user document
+      final userDoc = FirebaseFirestore.instance.collection('users').doc(uid);
+      final userData = await userDoc.get();
 
-      // Save login status locally
+      if (!userData.exists) {
+        // Create default user data
+        await userDoc.set({
+          'email': null, // Guest users don't have emails
+          'uid': uid,
+          'role': 'user', // Default role for guest users
+          'createdAt': DateTime.now(),
+        });
+      }
+
+      final role = (await userDoc.get()).data()?['role'] ?? 'user';
+
+      // Save login status, UID, and role locally
       final SharedPreferences prefs = await SharedPreferences.getInstance();
       await prefs.setBool('isLoggedIn', true);
+      await prefs.setString('uid', uid);
+      await prefs.setString('role', role);
 
-      Navigator.pushReplacementNamed(context, entryPointScreenRoute);
-    } catch (error) {
-      print('Google Sign-In Error: $error');
+      // Navigate based on role
+      if (role == 'admin') {
+            Navigator.pushReplacement(
+              context,
+              MaterialPageRoute(
+                  builder: (context) =>
+                      AdminOrderManage()), // Navigate to Admin Panel
+            );
+      } else if (role == 'user') {
+        Navigator.pushReplacementNamed(context, entryPointScreenRoute);
+      } else {
+        throw Exception("Invalid user role: $role");
+      }
     }
+  } catch (error) {
+    _showErrorSnackBar('Anonymous Sign-In Error: $error');
   }
+}
 
-  // Anonymous Sign-In function
-  Future<void> _continueAsGuest() async {
-    try {
-      await FirebaseAuth.instance.signInAnonymously();
-
-      // Save login status locally as a guest
-      final SharedPreferences prefs = await SharedPreferences.getInstance();
-      await prefs.setBool('isLoggedIn', true);
-
-      Navigator.pushReplacementNamed(context, entryPointScreenRoute);
-    } catch (error) {
-      print('Anonymous Sign-In Error: $error');
-    }
-  }
+// Show error messages
+void _showErrorSnackBar(String message) {
+  ScaffoldMessenger.of(context).showSnackBar(
+    SnackBar(
+      content: Text(
+        message,
+        style: const TextStyle(color: Colors.white),
+      ),
+      backgroundColor: Colors.red,
+      duration: const Duration(seconds: 3),
+    ),
+  );
+}
 
   @override
   Widget build(BuildContext context) {

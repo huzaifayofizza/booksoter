@@ -1,7 +1,9 @@
 import 'package:bookstore/constants.dart';
 import 'package:bookstore/route/route_constants.dart';
 import 'package:bookstore/route/screen_export.dart';
-import 'package:bookstore/screens/admin_panel/Screen/BookInsertForm.dart';
+import 'package:bookstore/screens/admin_panel/Screen/DrawerWidget.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
 class AdminUserAccount extends StatefulWidget {
@@ -10,74 +12,111 @@ class AdminUserAccount extends StatefulWidget {
 }
 
 class _AdminUserAccountState extends State<AdminUserAccount> {
-  List<User> users = [
-    User(email: 'user1@example.com', password: 'password1'),
-    User(email: 'user2@example.com', password: 'password2'),
-    // Add more users here
-  ];
+  List<User> users = [];
+
+  @override
+  void initState() {
+    super.initState();
+    _fetchUsers();
+  }
+
+  // Fetch users from Firestore
+  Future<void> _fetchUsers() async {
+    final firestore = FirebaseFirestore.instance;
+    try {
+      final querySnapshot = await firestore.collection('users').get();
+      final userList = querySnapshot.docs.map((doc) {
+        return User(
+          email:
+              doc['email'] ?? 'No Email', // Add default value if email is null
+          role: doc['role'] ?? 'No Role', // Add default value if role is null
+          uid: doc.id, // Store Firestore document id as UID
+        );
+      }).toList();
+
+      setState(() {
+        users = userList;
+      });
+    } catch (e) {
+      print('Error fetching users: $e');
+    }
+  }
+
+  // Delete user from Firestore (Firebase Authentication doesn't allow deleting other users by email)
+  Future<void> _deleteUser(String email) async {
+    try {
+      final firestore = FirebaseFirestore.instance;
+
+      // Prevent deleting the currently logged-in user
+      final auth = FirebaseAuth.instance;
+      if (auth.currentUser?.email == email) {
+        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+          content: Text('You cannot delete the currently logged-in user.'),
+        ));
+        return;
+      }
+
+      // Find user document in Firestore
+      final userDoc = await firestore
+          .collection('users')
+          .where('email', isEqualTo: email)
+          .get();
+      if (userDoc.docs.isEmpty) {
+        // If user does not exist in Firestore, display UID
+        final currentUser = auth.currentUser;
+        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+          content:
+              Text('Email not found. User UID: ${currentUser?.uid ?? "N/A"}'),
+        ));
+        return;
+      }
+
+      // If user exists, delete their document from Firestore
+      await userDoc.docs.first.reference.delete();
+
+      setState(() {
+        users.removeWhere((user) => user.email == email);
+      });
+
+      print('User deleted successfully.');
+    } catch (e) {
+      print('Error deleting user: $e');
+    }
+  }
+
+  // Change user role in Firestore
+  Future<void> _changeRole(String email, String newRole) async {
+    try {
+      final firestore = FirebaseFirestore.instance;
+      final userDoc = await firestore
+          .collection('users')
+          .where('email', isEqualTo: email)
+          .get();
+      if (userDoc.docs.isNotEmpty) {
+        await userDoc.docs.first.reference.update({'role': newRole});
+      }
+
+      setState(() {
+        // Update user role locally
+        final index = users.indexWhere((user) => user.email == email);
+        if (index != -1) {
+          users[index].role = newRole;
+        }
+      });
+
+      print('User role updated to $newRole.');
+    } catch (e) {
+      print('Error changing user role: $e');
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Book Store Admin'),
+        title: const Text('Book Store Admin'),
       ),
-      drawer: Drawer(
-        child: ListView(
-          padding: EdgeInsets.zero,
-          children: [
-            DrawerHeader(
-              decoration: BoxDecoration(
-                color: Theme.of(context).primaryColor,
-              ),
-              child: Text(
-                'Book Store Admin',
-                style: TextStyle(
-                  color: Colors.white,
-                  fontSize: 24,
-                ),
-              ),
-            ),
-            ListTile(
-              title: const Text('Book View'),
-              onTap: () {
-                setState(() {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(builder: (context) => BookStoreView()),
-                  );
-                });
-              },
-            ),
-            ListTile(
-              title: const Text('Book Insert'),
-              onTap: () {
-                setState(() {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(builder: (context) => BookStoreAdmin()),
-                  );
-                });
-              },
-            ),
-            ListTile(
-              title: const Text('Orders Manage'),
-              onTap: () {
-                setState(() {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(builder: (context) => AdminOrderManage()),
-                  );
-                });
-              },
-            ),
-            ListTile(
-              title: const Text('Logout'),
-              onTap: () => _handleLogout(), // Implement logout logic here
-            ),
-          ],
-        ),
-      ),
+      drawer: DrawerWidget(),
       body: SingleChildScrollView(
         child: Center(
           child: Column(
@@ -91,63 +130,39 @@ class _AdminUserAccountState extends State<AdminUserAccount> {
               DataTable(
                 columns: [
                   DataColumn(label: Text('Email')),
-                  DataColumn(label: Text('Password')),
+                  DataColumn(label: Text('Role')),
                   DataColumn(label: Text('Actions')),
                 ],
-                rows: [
-                  // Add data rows for each user account
-                  DataRow(
+                rows: users.map((user) {
+                  return DataRow(
                     cells: [
-                      DataCell(Text('huzaifafizza981770@gmail.com')),
                       DataCell(
-                          Text('***********')), // Password should be hidden
+                          Text(user.email.isEmpty ? user.uid : user.email)),
+                      DataCell(Text(user.role)),
                       DataCell(
                         Row(
                           children: [
                             IconButton(
                               icon: Icon(Icons.edit),
                               onPressed: () {
-                                // Handle edit button press
+                                // Handle role change
+                                _changeRole(user.email,
+                                    user.role == 'admin' ? 'user' : 'admin');
                               },
                             ),
                             IconButton(
                               icon: Icon(Icons.delete),
                               onPressed: () {
-                                // Handle delete button press
+                                // Confirm before deleting
+                                _showDeleteConfirmation(user.email);
                               },
                             ),
                           ],
                         ),
                       ),
                     ],
-                  ),
-                  DataRow(
-                    cells: [
-                      DataCell(Text('danishhanif123@gmail.com')),
-                      DataCell(
-                          Text('***********')), // Password should be hidden
-                      DataCell(
-                        Row(
-                          children: [
-                            IconButton(
-                              icon: Icon(Icons.edit),
-                              onPressed: () {
-                                // Handle edit button press
-                              },
-                            ),
-                            IconButton(
-                              icon: Icon(Icons.delete),
-                              onPressed: () {
-                                // Handle delete button press
-                              },
-                            ),
-                          ],
-                        ),
-                      ),
-                    ],
-                  ),
-                  // Add more data rows for other user accounts
-                ],
+                  );
+                }).toList(),
               ),
             ],
           ),
@@ -156,15 +171,39 @@ class _AdminUserAccountState extends State<AdminUserAccount> {
     );
   }
 
-  void _handleLogout() {
-    // Implement logic to handle logout, such as navigating to a login screen
-    Navigator.pushNamed(context, logInScreenRoute); // Example
+  // Show confirmation before deletion
+  void _showDeleteConfirmation(String email) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text('Delete User'),
+          content: Text('Are you sure you want to delete this user?'),
+          actions: <Widget>[
+            TextButton(
+              child: Text('Cancel'),
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+            ),
+            TextButton(
+              child: Text('Delete'),
+              onPressed: () {
+                _deleteUser(email);
+                Navigator.of(context).pop();
+              },
+            ),
+          ],
+        );
+      },
+    );
   }
 }
 
 class User {
-  final String email;
-  final String password;
+  String email;
+  String role;
+  String uid; // UID field added
 
-  User({required this.email, required this.password});
+  User({required this.email, required this.role, required this.uid});
 }

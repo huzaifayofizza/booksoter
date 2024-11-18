@@ -40,7 +40,7 @@ Route<dynamic> generateRoute(RouteSettings settings) {
       );
     case profileScreenRoute:
       return MaterialPageRoute(
-        builder: (context) => const ProfileScreen(),
+        builder: (context) => ProfileScreen(),
       );
     case preferencesScreenRoute:
       return MaterialPageRoute(
@@ -58,22 +58,22 @@ Route<dynamic> generateRoute(RouteSettings settings) {
       return MaterialPageRoute(
         builder: (context) => OrderConfirmationPage(),
       );
-    case bookInsertFormScreenRoute:
-      return MaterialPageRoute(
-        builder: (context) => BookStoreAdmin(),
-      );
-    case bookViewScreenRoute:
-      return MaterialPageRoute(
-        builder: (context) => BookStoreView(),
-      );
-    case AdminUserAccountScreenRoute:
-      return MaterialPageRoute(
-        builder: (context) => AdminUserAccount(),
-      );
-    case AdminOrderManageSCreenRoute:
-      return MaterialPageRoute(
-        builder: (context) => AdminUserAccount(),
-      );
+    // case bookInsertFormScreenRoute:
+    //   return MaterialPageRoute(
+    //     builder: (context) => BookStoreAdmin(),
+    //   );
+    // case bookViewScreenRoute:
+    //   return MaterialPageRoute(
+    //     builder: (context) => BookStoreView(),
+    //   );
+    // case AdminUserAccountScreenRoute:
+    //   return MaterialPageRoute(
+    //     builder: (context) => AdminUserAccount(),
+    //   );
+    // case AdminOrderManageSCreenRoute:
+    //   return MaterialPageRoute(
+    //     builder: (context) => AdminUserAccount(),
+    //   );
     default:
       return MaterialPageRoute(
         builder: (context) => const OnBordingScreen(),

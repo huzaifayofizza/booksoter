@@ -1,8 +1,9 @@
 import 'package:bookstore/constants.dart';
 import 'package:bookstore/route/route_constants.dart';
 import 'package:bookstore/route/screen_export.dart';
-import 'package:bookstore/screens/admin_panel/Screen/BookView.dart';
-import 'package:bookstore/screens/admin_panel/Screen/adminUserAccount.dart';
+
+import 'package:bookstore/screens/admin_panel/Screen/DrawerWidget.dart';
+
 import 'package:flutter/material.dart';
 
 // Assuming you have a model class for Order (replace with yours)
@@ -36,62 +37,7 @@ class _AdminOrderManageState extends State<AdminOrderManage> {
       appBar: AppBar(
         title: const Text('Book Store Admin'),
       ),
-      drawer: Drawer(
-        child: ListView(
-          padding: EdgeInsets.zero,
-          children: [
-            DrawerHeader(
-              decoration: BoxDecoration(
-                color: Theme.of(context).primaryColor,
-              ),
-              child: Text(
-                'Book Store Admin',
-                style: TextStyle(
-                  color: Colors.white,
-                  fontSize: 24,
-                ),
-              ),
-            ),
-            ListTile(
-              title: const Text('Book View'),
-              onTap: () {
-                setState(() {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(builder: (context) => BookStoreView()),
-                  );
-                });
-              },
-            ),
-            ListTile(
-              title: const Text('Book Insert'),
-              onTap: () {
-                setState(() {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(builder: (context) => BookStoreAdmin()),
-                  );
-                });
-              },
-            ),
-            ListTile(
-              title: const Text('User Profile'),
-              onTap: () {
-                setState(() {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(builder: (context) => AdminUserAccount()),
-                  );
-                });
-              },
-            ),
-            ListTile(
-              title: const Text('Logout'),
-              onTap: () => _handleLogout(), // Implement logout logic here
-            ),
-          ],
-        ),
-      ),
+      drawer: DrawerWidget(),
       body: SingleChildScrollView(
         child: Center(
           child: Column(

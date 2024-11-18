@@ -17,8 +17,8 @@ class _EntryPointState extends State<EntryPoint> {
   final List _pages = [
     const HomeScreen(),
     const BookmarkScreen(),
-    const ProfileScreen(),
-    AdminUserAccount(),
+      ProfileScreen(),
+  
   ];
   int _currentIndex = 0;
 
@@ -131,12 +131,7 @@ class _EntryPointState extends State<EntryPoint> {
                   svgIcon("assets/icons/Profile.svg", color: primaryColor),
               label: "Profile",
             ),
-            BottomNavigationBarItem(
-              icon: svgIcon("assets/icons/Profile.svg"),
-              activeIcon:
-                  svgIcon("assets/icons/Profile.svg", color: primaryColor),
-              label: "Admin",
-            ),
+          
           ],
         ),
       ),

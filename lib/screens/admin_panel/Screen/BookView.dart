@@ -1,10 +1,6 @@
-import 'package:bookstore/route/route_constants.dart';
-import 'package:bookstore/route/screen_export.dart';
-import 'package:flutter/material.dart';
 
-void main() {
-  runApp(BookStoreView());
-}
+import 'package:bookstore/screens/admin_panel/Screen/DrawerWidget.dart';
+import 'package:flutter/material.dart';
 
 class BookStoreView extends StatefulWidget {
   @override
@@ -18,7 +14,8 @@ class _BookStoreViewState extends State<BookStoreView> {
       title: 'The Lord of the Rings',
       author: 'J.R.R. Tolkien',
       genre: 'Fantasy',
-      description: 'An epic high-fantasy tale of hobbits, rings, and fellowship.',
+      description:
+          'An epic high-fantasy tale of hobbits, rings, and fellowship.',
       price: 19.99,
       // imageUrl: 'assets/illustration/EmptyState_darkTheme.png',
     ),
@@ -36,66 +33,10 @@ class _BookStoreViewState extends State<BookStoreView> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text('Book Store Admin'),
+         appBar: AppBar(
+        title: const Text('Book Store Admin'),
       ),
-      drawer: Drawer(
-        child: ListView(
-          padding: EdgeInsets.zero,
-          children: [
-            DrawerHeader(
-              decoration: BoxDecoration(
-                color: Theme.of(context).primaryColor,
-              ),
-              child: Text(
-                'Book Store Admin',
-                style: TextStyle(
-                  color: Colors.white,
-                  fontSize: 24,
-                ),
-              ),
-            ),
-           ListTile(
-              title: const Text('Book Insert'),
-          
-              onTap: () {
-                setState(() {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(builder: (context) => BookStoreAdmin()),
-                  );
-                });
-              },
-            ),
-            ListTile(
-              title: const Text('Orders Manage'),
-             onTap: () {
-                setState(() {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(builder: (context) => AdminOrderManage()),
-                  );
-                });
-              },
-            ),
-            ListTile(
-              title: const Text('User Profile'),
-               onTap: () {
-                setState(() {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(builder: (context) => AdminUserAccount()),
-                  );
-                });
-              },
-            ),
-            ListTile(
-              title: const Text('Logout'),
-              onTap: () => _handleLogout(), // Implement logout logic here
-            ),
-          ],
-        ),
-      ),
+      drawer: DrawerWidget(),
       body: ListView.builder(
         itemCount: books.length,
         itemBuilder: (context, index) {
@@ -103,10 +44,6 @@ class _BookStoreViewState extends State<BookStoreView> {
         },
       ),
     );
-  }
-    void _handleLogout() {
-    // Implement logic to handle logout, such as navigating to a login screen
-    Navigator.pushNamed(context, logInScreenRoute); // Example
   }
 }
 
@@ -149,10 +86,10 @@ class BookItem extends StatelessWidget {
                     style: TextStyle(fontSize: 12.0, color: Colors.grey),
                   ),
                   SizedBox(height: 8.0),
-
-                  Text(book.description, 
-                    style: TextStyle(fontSize: 12.0, color: Colors.grey),),
-
+                  Text(
+                    book.description,
+                    style: TextStyle(fontSize: 12.0, color: Colors.grey),
+                  ),
                   SizedBox(height: 8.0),
                   Text(
                     '\$${book.price.toStringAsFixed(2)}',
@@ -169,8 +106,6 @@ class BookItem extends StatelessWidget {
       ),
     );
   }
-
-  
 }
 
 class Book {
@@ -189,6 +124,4 @@ class Book {
     required this.price,
     // required this.imageUrl,
   });
-
-  
 }

@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:bookstore/constants.dart';
 import 'package:bookstore/route/screen_export.dart';
+import 'package:bookstore/screens/admin_panel/Screen/DrawerWidget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:image_picker/image_picker.dart';
@@ -22,8 +23,7 @@ class _BookStoreAdminState extends State<BookStoreAdmin> {
   String _price = '';
   XFile? _imageFile; // Variable to store the selected image
 
-  // Drawer navigation logic
-  int _selectedIndex = 0; // Initially selected index for drawer items
+
 
   Future<void> _pickImage() async {
     final pickedFile =
@@ -36,65 +36,10 @@ class _BookStoreAdminState extends State<BookStoreAdmin> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
+     appBar: AppBar(
         title: const Text('Book Store Admin'),
       ),
-      drawer: Drawer(
-        child: ListView(
-          padding: EdgeInsets.zero,
-          children: [
-            DrawerHeader(
-              decoration: BoxDecoration(
-                color: Theme.of(context).primaryColor,
-              ),
-              child: Text(
-                'Book Store Admin',
-                style: TextStyle(
-                  color: Colors.white,
-                  fontSize: 24,
-                ),
-              ),
-            ),
-               ListTile(
-              title: const Text('Book View'),
-              onTap: () {
-                setState(() {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(builder: (context) => BookStoreView()),
-                  );
-                });
-              },
-            ),
-            ListTile(
-              title: const Text('Orders Manage'),
-             onTap: () {
-                setState(() {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(builder: (context) => AdminOrderManage()),
-                  );
-                });
-              },
-            ),
-            ListTile(
-              title: const Text('User Profile'),
-             onTap: () {
-                setState(() {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(builder: (context) => AdminUserAccount()),
-                  );
-                });
-              },
-            ),
-            ListTile(
-              title: const Text('Logout'),
-              onTap: () => _handleLogout(), // Implement logout logic here
-            ),
-          ],
-        ),
-      ),
+      drawer: DrawerWidget(),
       body: SingleChildScrollView(
         padding: const EdgeInsets.all(20.0),
         child: Column(
