@@ -20,7 +20,6 @@ class HomeScreen extends StatelessWidget {
         child: CustomScrollView(
           slivers: [
             const SliverToBoxAdapter(child: OffersCarouselAndCategories()),
-           
             const SliverToBoxAdapter(child: PopularProducts()),
             SliverToBoxAdapter(
               child: Column(
@@ -30,17 +29,13 @@ class HomeScreen extends StatelessWidget {
                   BannerSStyle1(
                     title: "New \narrival",
                     subtitle: "SPECIAL OFFER",
-                    discountParcent: 50,
-                    press: () {
-                      Navigator.pushNamed(context, onSaleScreenRoute);
-                    },
+                    press: () {},
                   ),
                   const SizedBox(height: defaultPadding / 4),
                   // We have 4 banner styles, all in the pro version
                 ],
               ),
             ),
-           
             const SliverToBoxAdapter(child: BestSellers()),
             SliverToBoxAdapter(
               child: Column(
@@ -51,12 +46,10 @@ class HomeScreen extends StatelessWidget {
                   // While loading use 👇
                   // const BannerSSkelton(),
                   BannerSStyle5(
-                    title: "Black \nfriday",
-                    subtitle: "50% Off",
+                    title: "We Have \nSpecial Books",
+                    subtitle: "For You",
                     bottomText: "Collection".toUpperCase(),
-                    press: () {
-                      Navigator.pushNamed(context, onSaleScreenRoute);
-                    },
+                    press: () {},
                   ),
                   const SizedBox(height: defaultPadding / 4),
                 ],

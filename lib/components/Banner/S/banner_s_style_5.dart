@@ -8,7 +8,8 @@ import 'banner_s.dart';
 class BannerSStyle5 extends StatelessWidget {
   const BannerSStyle5({
     super.key,
-    this.image = "https://i.imgur.com/wQ0sNHT.png",
+    this.image =
+        "https://images.pexels.com/photos/415071/pexels-photo-415071.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1",
     required this.title,
     required this.press,
     this.subtitle,
@@ -77,12 +78,6 @@ class BannerSStyle5 extends StatelessWidget {
                 ),
               ),
               const SizedBox(width: defaultPadding),
-              SvgPicture.asset(
-                "assets/icons/miniRight.svg",
-                height: 28,
-                colorFilter:
-                    const ColorFilter.mode(Colors.white, BlendMode.srcIn),
-              ),
             ],
           ),
         ),

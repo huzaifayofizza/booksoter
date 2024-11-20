@@ -237,7 +237,7 @@ void _showErrorSnackBar(String message) {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               Image.asset(
-                "assets/images/login_dark.png",
+                "assets/images/login_dark.jpg",
                 fit: BoxFit.cover,
               ),
               Padding(

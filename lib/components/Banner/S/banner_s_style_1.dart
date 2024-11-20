@@ -1,23 +1,22 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 
-
 import '../../../constants.dart';
 import 'banner_s.dart';
 
 class BannerSStyle1 extends StatelessWidget {
   const BannerSStyle1({
     super.key,
-    this.image = "https://i.imgur.com/K41Mj7C.png",
+    this.image =
+        "https://images.pexels.com/photos/904616/pexels-photo-904616.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1",
     required this.title,
     required this.press,
     this.subtitle,
-    required this.discountParcent,
   });
   final String? image;
   final String title;
   final String? subtitle;
-  final int discountParcent;
+
   final VoidCallback press;
 
   @override
@@ -60,26 +59,9 @@ class BannerSStyle1 extends StatelessWidget {
                 ),
               ),
               const SizedBox(width: defaultPadding),
-              SizedBox(
-                height: 48,
-                width: 48,
-                child: ElevatedButton(
-                  onPressed: press,
-                  style: ElevatedButton.styleFrom(
-                    shape: const CircleBorder(),
-                    backgroundColor: Colors.white,
-                  ),
-                  child: SvgPicture.asset(
-                    "assets/icons/Arrow - Right.svg",
-                    colorFilter:
-                        const ColorFilter.mode(Colors.black, BlendMode.srcIn),
-                  ),
-                ),
-              ),
             ],
           ),
         ),
-     
       ],
     );
   }

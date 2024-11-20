@@ -8,16 +8,15 @@ import '../../../constants.dart';
 class BannerMStyle2 extends StatelessWidget {
   const BannerMStyle2({
     super.key,
-    this.image = "https://i.imgur.com/J1Qjut7.png",
+    this.image = "https://images.pexels.com/photos/768125/pexels-photo-768125.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1",
     required this.title,
     required this.press,
     this.subtitle,
-    required this.discountParcent,
   });
   final String? image;
   final String title;
   final String? subtitle;
-  final int discountParcent;
+
   final VoidCallback press;
 
   @override

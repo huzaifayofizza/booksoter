@@ -9,16 +9,16 @@ import '../../../constants.dart';
 class BannerMStyle4 extends StatelessWidget {
   const BannerMStyle4({
     super.key,
-    this.image = "https://i.imgur.com/R4iKkDD.png",
+    this.image =
+        "https://images.pexels.com/photos/2465877/pexels-photo-2465877.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1",
     required this.title,
     required this.press,
-    required this.discountParcent,
     this.subtitle,
   });
   final String? image;
   final String title;
   final String? subtitle;
-  final int discountParcent;
+
   final VoidCallback press;
 
   @override
@@ -64,15 +64,6 @@ class BannerMStyle4 extends StatelessWidget {
                       ),
                     ),
                     // const SizedBox(height: defaultPadding / 4),
-                    Text(
-                      "UP TO $discountParcent% OFF",
-                      style: const TextStyle(
-                        fontFamily: grandisExtendedFont,
-                        color: Colors.white,
-                        fontSize: 12,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    )
                   ],
                 ),
               ),

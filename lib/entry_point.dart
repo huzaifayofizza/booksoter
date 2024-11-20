@@ -17,8 +17,7 @@ class _EntryPointState extends State<EntryPoint> {
   final List _pages = [
     const HomeScreen(),
     const BookmarkScreen(),
-      ProfileScreen(),
-  
+    ProfileScreen(),
   ];
   int _currentIndex = 0;
 
@@ -46,11 +45,11 @@ class _EntryPointState extends State<EntryPoint> {
         leadingWidth: 0,
         centerTitle: false,
         title: SvgPicture.asset(
-          "assets/logo/Shoplon.svg",
+          "assets/logo/Bookstore.svg",
           colorFilter: ColorFilter.mode(
               Theme.of(context).iconTheme.color!, BlendMode.srcIn),
-          height: 20,
-          width: 100,
+          height: 200,
+          width: 900,
         ),
         actions: [
           IconButton(
@@ -131,7 +130,6 @@ class _EntryPointState extends State<EntryPoint> {
                   svgIcon("assets/icons/Profile.svg", color: primaryColor),
               label: "Profile",
             ),
-          
           ],
         ),
       ),

@@ -9,14 +9,14 @@ import '../../../constants.dart';
 class BannerMStyle3 extends StatelessWidget {
   const BannerMStyle3({
     super.key,
-    this.image = "https://i.imgur.com/8REExBV.png",
+    this.image =
+        "https://images.pexels.com/photos/267586/pexels-photo-267586.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1",
     required this.title,
     required this.press,
-    required this.discountParcent,
   });
   final String? image;
   final String title;
-  final int discountParcent;
+
   final VoidCallback press;
 
   @override
@@ -36,18 +36,7 @@ class BannerMStyle3 extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Container(
-                      padding: const EdgeInsets.symmetric(
-                          horizontal: defaultPadding / 2,
-                          vertical: defaultPadding / 8),
                       color: Colors.white70,
-                      child: Text(
-                        "$discountParcent% off",
-                        style: const TextStyle(
-                          color: Colors.black54,
-                          fontWeight: FontWeight.bold,
-                          fontSize: 12,
-                        ),
-                      ),
                     ),
                     const SizedBox(height: defaultPadding / 2),
                     Text(
