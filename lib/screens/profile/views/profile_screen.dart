@@ -8,6 +8,7 @@ import 'package:google_sign_in/google_sign_in.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+
 class ProfileScreen extends StatefulWidget {
   @override
   _ProfileScreenState createState() => _ProfileScreenState();
@@ -88,19 +89,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
               "Account",
               style: Theme.of(context).textTheme.titleSmall,
             ),
-          ),
-          const SizedBox(height: defaultPadding / 2),
-          ProfileMenuListTile(
-            text: "Orders",
-            svgSrc: "assets/icons/Order.svg",
-            press: () {
-              Navigator.pushNamed(context, ordersScreenRoute);
-            },
-          ),
-          ProfileMenuListTile(
-            text: "Saved",
-            svgSrc: "assets/icons/Wishlist.svg",
-            press: () {},
           ),
           const SizedBox(height: defaultPadding),
           ProfileMenuListTile(

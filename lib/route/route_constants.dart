@@ -64,3 +64,6 @@ const String bookInsertFormScreenRoute = "BookInsert";
 const String bookViewScreenRoute = "BookView";
 const String AdminUserAccountScreenRoute = "AdminUserAccount";
 const String AdminOrderManageSCreenRoute = "AdminOrderManage";
+const String ShopcategoryScreenRoute = "CategoryScreenRoute";
+const String BookcategoryScreenRoute = "BookCategoryPage";
+const String commitPageScreenRoute = "CommitPage";

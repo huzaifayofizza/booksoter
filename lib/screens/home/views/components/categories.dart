@@ -7,7 +7,8 @@ import '../../../../constants.dart';
 // For preview
 class CategoryModel {
   final String name;
-  final String? svgSrc, route;
+  final String? svgSrc;
+  final String? route;
 
   CategoryModel({
     required this.name,
@@ -29,10 +30,15 @@ List<CategoryModel> demoCategories = [
 ];
 // End For Preview
 
-class Categories extends StatelessWidget {
-  const Categories({
-    super.key,
-  });
+class Categories extends StatefulWidget {
+  const Categories({super.key});
+
+  @override
+  State<Categories> createState() => _CategoriesState();
+}
+
+class _CategoriesState extends State<Categories> {
+  double _width = 0.0; // State variable to store desired width
 
   @override
   Widget build(BuildContext context) {
@@ -40,13 +46,14 @@ class Categories extends StatelessWidget {
       scrollDirection: Axis.horizontal,
       child: Row(
         children: [
+          const SizedBox(height: defaultPadding / 4),
           ...List.generate(
             demoCategories.length,
             (index) => Padding(
               padding: EdgeInsets.only(
-                  left: index == 0 ? defaultPadding : defaultPadding / 2,
-                  right:
-                      index == demoCategories.length - 1 ? defaultPadding : 0),
+                left: index == 0 ? defaultPadding : defaultPadding / 2,
+                right: index == demoCategories.length - 1 ? defaultPadding : 0,
+              ),
               child: CategoryBtn(
                 category: demoCategories[index].name,
                 svgSrc: demoCategories[index].svgSrc,
@@ -62,6 +69,13 @@ class Categories extends StatelessWidget {
         ],
       ),
     );
+  }
+
+  // Function to set the width of the widget
+  void setWidth(double width) {
+    setState(() {
+      _width = width;
+    });
   }
 }
 
@@ -81,19 +95,23 @@ class CategoryBtn extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    Text(
+      "Categories",
+      style: Theme.of(context).textTheme.titleSmall,
+    );
     return InkWell(
       onTap: press,
-      borderRadius: const BorderRadius.all(Radius.circular(30)),
+      borderRadius: BorderRadius.circular(30),
       child: Container(
         height: 36,
         padding: const EdgeInsets.symmetric(horizontal: defaultPadding),
         decoration: BoxDecoration(
           color: isActive ? primaryColor : Colors.transparent,
           border: Border.all(
-              color: isActive
-                  ? Colors.transparent
-                  : Theme.of(context).dividerColor),
-          borderRadius: const BorderRadius.all(Radius.circular(30)),
+            color:
+                isActive ? Colors.transparent : Theme.of(context).dividerColor,
+          ),
+          borderRadius: BorderRadius.circular(30),
         ),
         child: Row(
           children: [

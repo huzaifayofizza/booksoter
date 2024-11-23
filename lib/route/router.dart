@@ -1,5 +1,6 @@
+import 'package:bookstore/screens/home/views/BookCategory_screen.dart';
+
 import 'package:bookstore/screens/product/views/orderPlaced.dart';
-import 'package:bookstore/screens/admin_panel/Screen/BookInsertForm.dart';
 import 'package:flutter/material.dart';
 import 'package:bookstore/entry_point.dart';
 
@@ -17,7 +18,7 @@ Route<dynamic> generateRoute(RouteSettings settings) {
       );
     case passwordRecoveryScreenRoute:
       return MaterialPageRoute(
-        builder: (context) =>  PasswordRecoveryScreen(),
+        builder: (context) => PasswordRecoveryScreen(),
       );
     case productDetailsScreenRoute:
       return MaterialPageRoute(
@@ -33,6 +34,10 @@ Route<dynamic> generateRoute(RouteSettings settings) {
     case bookmarkScreenRoute:
       return MaterialPageRoute(
         builder: (context) => const BookmarkScreen(),
+      );
+    case commitPageScreenRoute:
+      return MaterialPageRoute(
+        builder: (context) =>  BookReview(),
       );
     case entryPointScreenRoute:
       return MaterialPageRoute(
@@ -57,6 +62,10 @@ Route<dynamic> generateRoute(RouteSettings settings) {
     case orderPlacedScreenRoute:
       return MaterialPageRoute(
         builder: (context) => OrderConfirmationPage(),
+      );
+    case BookcategoryScreenRoute:
+      return MaterialPageRoute(
+        builder: (context) => BookCategory(),
       );
     // case bookInsertFormScreenRoute:
     //   return MaterialPageRoute(

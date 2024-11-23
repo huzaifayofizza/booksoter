@@ -1,3 +1,5 @@
+import 'package:bookstore/components/Banner/S/banner_s_style_5.dart';
+import 'package:bookstore/screens/home/views/components/categories.dart';
 import 'package:flutter/material.dart';
 import 'package:bookstore/components/product/product_card.dart';
 import 'package:bookstore/models/product_model.dart';
@@ -5,16 +7,15 @@ import 'package:bookstore/route/route_constants.dart';
 
 import '../../../constants.dart';
 
-class BookmarkScreen extends StatelessWidget {
-  const BookmarkScreen({super.key});
+class BookCategory extends StatelessWidget {
+  const BookCategory({super.key});
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: CustomScrollView(
         slivers: [
-          // While loading use 👇
-          //  BookMarksSlelton(),
+          SliverToBoxAdapter(child: Categories()),
           SliverPadding(
             padding: const EdgeInsets.symmetric(
               horizontal: defaultPadding,
@@ -22,10 +23,10 @@ class BookmarkScreen extends StatelessWidget {
             ),
             sliver: SliverGrid(
               gridDelegate: const SliverGridDelegateWithMaxCrossAxisExtent(
-                maxCrossAxisExtent: 210.0,
+                maxCrossAxisExtent: 230.0,
                 mainAxisSpacing: defaultPadding,
                 crossAxisSpacing: defaultPadding,
-                childAspectRatio: 0.62,
+                childAspectRatio: 0.75,
               ),
               delegate: SliverChildBuilderDelegate(
                 (BuildContext context, int index) {

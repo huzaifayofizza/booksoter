@@ -1,3 +1,4 @@
+import 'package:bookstore/screens/home/views/components/offers_carousel.dart';
 import 'package:flutter/material.dart';
 import 'package:bookstore/components/Banner/S/banner_s_style_1.dart';
 import 'package:bookstore/components/Banner/S/banner_s_style_5.dart';
@@ -6,7 +7,6 @@ import 'package:bookstore/route/screen_export.dart';
 
 import 'components/best_sellers.dart';
 
-import 'components/most_popular.dart';
 import 'components/offer_carousel_and_categories.dart';
 import 'components/popular_products.dart';
 
@@ -19,8 +19,8 @@ class HomeScreen extends StatelessWidget {
       body: SafeArea(
         child: CustomScrollView(
           slivers: [
-            const SliverToBoxAdapter(child: OffersCarouselAndCategories()),
-            const SliverToBoxAdapter(child: PopularProducts()),
+            const SliverToBoxAdapter(child: OffersCarousel()),
+            const SliverToBoxAdapter(child: BestSellers()),
             SliverToBoxAdapter(
               child: Column(
                 children: [
@@ -55,7 +55,7 @@ class HomeScreen extends StatelessWidget {
                 ],
               ),
             ),
-            const SliverToBoxAdapter(child: MostPopular()),
+            const SliverToBoxAdapter(child: PopularProducts()),
           ],
         ),
       ),

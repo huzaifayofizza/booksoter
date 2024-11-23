@@ -12,7 +12,7 @@ class ProductCard extends StatelessWidget {
     required this.price,
     this.priceAfetDiscount,
     this.dicountpercent,
-    required this.press,
+    required this.press, int? discountPercent,
   });
   final String image, brandName, title;
   final double price;
