@@ -1,3 +1,4 @@
+import 'package:bookstore/screens/admin_panel/Screen/AdminOrderManage.dart';
 import 'package:bookstore/screens/admin_panel/Screen/BookInsertForm.dart';
 import 'package:bookstore/screens/admin_panel/Screen/BookView.dart';
 import 'package:bookstore/screens/admin_panel/Screen/adminUserAccount.dart';
@@ -126,6 +127,16 @@ class _DrawerWidgetState extends State<DrawerWidget> {
                     Navigator.push(
                       context,
                       MaterialPageRoute(builder: (context) => BookStoreAdmin()),
+                    );
+                  },
+                ),
+                _buildDrawerItem(
+                  title: 'Order Management',
+                  onTap: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => AdminOrderManage()),
                     );
                   },
                 ),

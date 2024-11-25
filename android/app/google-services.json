@@ -14,6 +14,14 @@
       },
       "oauth_client": [
         {
+          "client_id": "1058340257066-9qb02fvt2f3650rcbefsfgpvcf43ofj5.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.bookstore.app",
+            "certificate_hash": "02236a986fa04444cdd83f83da31d0a6052ecc50"
+          }
+        },
+        {
           "client_id": "1058340257066-3hfnoas5kidjvmdfq03e13rier19e8ua.apps.googleusercontent.com",
           "client_type": 3
         }
@@ -49,6 +57,14 @@
         }
       },
       "oauth_client": [
+        {
+          "client_id": "1058340257066-a50sagodbktku5l0nfpvln6v6iiga4mv.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.bookstore",
+            "certificate_hash": "02236a986fa04444cdd83f83da31d0a6052ecc50"
+          }
+        },
         {
           "client_id": "1058340257066-3hfnoas5kidjvmdfq03e13rier19e8ua.apps.googleusercontent.com",
           "client_type": 3
