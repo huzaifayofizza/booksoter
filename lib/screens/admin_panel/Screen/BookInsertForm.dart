@@ -224,7 +224,7 @@ class _BookStoreAdminState extends State<BookStoreAdmin> {
                   const SizedBox(height: defaultPadding),
                   ElevatedButton(
                     child: const Text('Choose Cover Image'),
-                    onPressed: () => _pickImage(ImageSource.camera),
+                    onPressed: () => _pickImage(ImageSource.gallery),
                   ),
                   if (_imageFile != null) ...[
                     kIsWeb
