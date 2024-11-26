@@ -9,6 +9,8 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class DrawerWidget extends StatefulWidget {
+  const DrawerWidget({super.key});
+
   @override
   _DrawerWidgetState createState() => _DrawerWidgetState();
 }
@@ -73,7 +75,7 @@ class _DrawerWidgetState extends State<DrawerWidget> {
   Widget build(BuildContext context) {
     return Drawer(
       child: isLoading
-          ? Center(child: CircularProgressIndicator())
+          ? const Center(child: CircularProgressIndicator())
           : ListView(
               padding: EdgeInsets.zero,
               children: [

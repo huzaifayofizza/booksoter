@@ -3,6 +3,8 @@ import 'package:bookstore/route/screen_export.dart';
 import 'package:flutter/material.dart';
 
 class CheckoutPage extends StatefulWidget {
+  const CheckoutPage({super.key});
+
   @override
   _CheckoutPageState createState() => _CheckoutPageState();
 }
@@ -16,7 +18,7 @@ class _CheckoutPageState extends State<CheckoutPage> {
   final _cityController = TextEditingController();
   final _stateController = TextEditingController();
   final _zipCodeController = TextEditingController();
-  bool _isGift = false;
+  final bool _isGift = false;
   bool _is12MonthWarranty = false;
   bool _is27MonthWarranty = false;
 
@@ -24,7 +26,7 @@ class _CheckoutPageState extends State<CheckoutPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Checkout'),
+        title: const Text('Checkout'),
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
@@ -36,7 +38,7 @@ class _CheckoutPageState extends State<CheckoutPage> {
               // Email Field
               TextFormField(
                 controller: _emailController,
-                decoration: InputDecoration(labelText: 'Email Address*'),
+                decoration: const InputDecoration(labelText: 'Email Address*'),
                 validator: (value) {
                   if (value == null || value.isEmpty) {
                     return 'Please enter your email address';
@@ -52,7 +54,7 @@ class _CheckoutPageState extends State<CheckoutPage> {
                   Expanded(
                     child: TextFormField(
                       controller: _firstNameController,
-                      decoration: InputDecoration(labelText: 'First Name*'),
+                      decoration: const InputDecoration(labelText: 'First Name*'),
                       validator: (value) {
                         if (value == null || value.isEmpty) {
                           return 'Please enter your first name';
@@ -61,11 +63,11 @@ class _CheckoutPageState extends State<CheckoutPage> {
                       },
                     ),
                   ),
-                  SizedBox(width: 16),
+                  const SizedBox(width: 16),
                   Expanded(
                     child: TextFormField(
                       controller: _lastNameController,
-                      decoration: InputDecoration(labelText: 'Last Name*'),
+                      decoration: const InputDecoration(labelText: 'Last Name*'),
                       validator: (value) {
                         if (value == null || value.isEmpty) {
                           return 'Please enter your last name';
@@ -81,7 +83,7 @@ class _CheckoutPageState extends State<CheckoutPage> {
               // Address Fields
               TextFormField(
                 controller: _addressController,
-                decoration: InputDecoration(labelText: 'Address*'),
+                decoration: const InputDecoration(labelText: 'Address*'),
                 validator: (value) {
                   if (value == null || value.isEmpty) {
                     return 'Please enter your address';
@@ -96,7 +98,7 @@ class _CheckoutPageState extends State<CheckoutPage> {
                   Expanded(
                     child: TextFormField(
                       controller: _cityController,
-                      decoration: InputDecoration(labelText: 'City*'),
+                      decoration: const InputDecoration(labelText: 'City*'),
                       validator: (value) {
                         if (value == null || value.isEmpty) {
                           return 'Please enter your city';
@@ -106,11 +108,11 @@ class _CheckoutPageState extends State<CheckoutPage> {
                     ),
                   ),
                   const SizedBox(height: defaultPadding),
-                  SizedBox(width: 16),
+                  const SizedBox(width: 16),
                   Expanded(
                     child: TextFormField(
                       controller: _stateController,
-                      decoration: InputDecoration(labelText: 'State*'),
+                      decoration: const InputDecoration(labelText: 'State*'),
                       validator: (value) {
                         if (value == null || value.isEmpty) {
                           return 'Please enter your state';
@@ -120,11 +122,11 @@ class _CheckoutPageState extends State<CheckoutPage> {
                     ),
                   ),
                   const SizedBox(height: defaultPadding),
-                  SizedBox(width: 16),
+                  const SizedBox(width: 16),
                   Expanded(
                     child: TextFormField(
                       controller: _zipCodeController,
-                      decoration: InputDecoration(labelText: 'ZIP Code*'),
+                      decoration: const InputDecoration(labelText: 'ZIP Code*'),
                       validator: (value) {
                         if (value == null || value.isEmpty) {
                           return 'Please enter your ZIP code';
@@ -139,7 +141,7 @@ class _CheckoutPageState extends State<CheckoutPage> {
 
               // Warranty Options
               CheckboxListTile(
-                title: Text(
+                title: const Text(
                     'Add 12 additional months for  175 per Peloton Bike, 24 total months of coverage'),
                 value: _is12MonthWarranty,
                 onChanged: (value) {
@@ -150,7 +152,7 @@ class _CheckoutPageState extends State<CheckoutPage> {
               ),
               const SizedBox(height: defaultPadding),
               CheckboxListTile(
-                title: Text(
+                title: const Text(
                     'Add 27 additional months for 230 per Peloton Bike+, 39 total months of coverage'),
                 value: _is27MonthWarranty,
                 onChanged: (value) {
@@ -173,7 +175,7 @@ class _CheckoutPageState extends State<CheckoutPage> {
                     Navigator.pushNamed(context, OrderConfimScreenRoute);
                   }
                 },
-                child: Text('Place Order'),
+                child: const Text('Place Order'),
               ),
             ],
           ),

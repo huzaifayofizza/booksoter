@@ -33,7 +33,7 @@ class PopularProducts extends StatelessWidget {
             } else if (snapshot.hasError) {
               return Center(child: Text('Error: ${snapshot.error}'));
             } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
-              return Center(child: Text('No products available'));
+              return const Center(child: Text('No products available'));
             }
 
             final products = snapshot.data!;
@@ -57,7 +57,8 @@ class PopularProducts extends StatelessWidget {
                       Navigator.pushNamed(
                         context,
                         productDetailsScreenRoute,
-                        arguments: index.isEven,
+                          arguments: products[index], // Pass the product data
+               
                       );
                     },
                   ),

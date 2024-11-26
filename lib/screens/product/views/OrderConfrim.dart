@@ -3,6 +3,8 @@ import 'package:bookstore/route/route_constants.dart';
 import 'package:flutter/material.dart';
 
 class CartSummaryPage extends StatefulWidget {
+  const CartSummaryPage({super.key});
+
   @override
   _CartSummaryPageState createState() => _CartSummaryPageState();
 }
@@ -15,7 +17,7 @@ class _CartSummaryPageState extends State<CartSummaryPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Cart Summary'),
+        title: const Text('Cart Summary'),
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
@@ -25,9 +27,9 @@ class _CartSummaryPageState extends State<CartSummaryPage> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               // Cart Items
-              Card(
+              const Card(
                 child: Padding(
-                  padding: const EdgeInsets.all(16.0),
+                  padding: EdgeInsets.all(16.0),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
@@ -44,9 +46,9 @@ class _CartSummaryPageState extends State<CartSummaryPage> {
                const SizedBox(height: defaultPadding),
 
               // Subtotal and Taxes
-              Card(
+              const Card(
                 child: Padding(
-                  padding: const EdgeInsets.all(16.0),
+                  padding: EdgeInsets.all(16.0),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
@@ -78,9 +80,9 @@ class _CartSummaryPageState extends State<CartSummaryPage> {
                const SizedBox(height: defaultPadding),
 
               // Estimated Total
-              Card(
+              const Card(
                 child: Padding(
-                  padding: const EdgeInsets.all(16.0),
+                  padding: EdgeInsets.all(16.0),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
@@ -99,9 +101,9 @@ class _CartSummaryPageState extends State<CartSummaryPage> {
                const SizedBox(height: defaultPadding),
 
               // 100-Day Home Trial
-              Card(
+              const Card(
                 child: Padding(
-                  padding: const EdgeInsets.all(16.0),
+                  padding: EdgeInsets.all(16.0),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
@@ -142,7 +144,7 @@ class _CartSummaryPageState extends State<CartSummaryPage> {
                   Navigator.pushNamed(context, orderPlacedScreenRoute);
                   }
                 },
-                child: Text('Your Order Is Done Now?'),
+                child: const Text('Your Order Is Done Now?'),
               ),
             ],
           ),

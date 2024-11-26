@@ -1,3 +1,4 @@
+import 'package:bookstore/models/product_model.dart';
 import 'package:bookstore/screens/home/views/BookCategory_screen.dart';
 
 import 'package:bookstore/screens/product/views/orderPlaced.dart';
@@ -20,13 +21,16 @@ Route<dynamic> generateRoute(RouteSettings settings) {
       return MaterialPageRoute(
         builder: (context) => PasswordRecoveryScreen(),
       );
-    case productDetailsScreenRoute:
-      return MaterialPageRoute(
-        builder: (context) {
-          bool isProductAvailable = settings.arguments as bool? ?? true;
-          return ProductDetailsScreen(isProductAvailable: isProductAvailable);
-        },
-      );
+   case productDetailsScreenRoute:
+  return MaterialPageRoute(
+    builder: (context) {
+      // Retrieve the product data passed as arguments
+      final ProductModel product = settings.arguments as ProductModel;
+
+      // Pass the product data to the ProductDetailsScreen
+      return ProductDetailsScreen(product: product);
+    },
+  );
     case homeScreenRoute:
       return MaterialPageRoute(
         builder: (context) => const HomeScreen(),
@@ -65,7 +69,7 @@ Route<dynamic> generateRoute(RouteSettings settings) {
       );
     case BookcategoryScreenRoute:
       return MaterialPageRoute(
-        builder: (context) => BookCategory(),
+        builder: (context) => const BookCategory(),
       );
     // case bookInsertFormScreenRoute:
     //   return MaterialPageRoute(

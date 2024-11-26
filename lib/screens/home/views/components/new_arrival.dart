@@ -10,7 +10,7 @@ class new_arrival extends StatelessWidget {
     super.key,
   });
   Future<List<ProductModel>> fetchBestProducts() async {
-    return await fetchnew_arrival(); // Use the fetchProducts function from your ProductModel file
+    return await fetchNewArrivals(); // Use the fetchProducts function from your ProductModel file
   }
 
   @override
@@ -34,7 +34,7 @@ class new_arrival extends StatelessWidget {
             } else if (snapshot.hasError) {
               return Center(child: Text('Error: ${snapshot.error}'));
             } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
-              return Center(child: Text('No products available'));
+              return const Center(child: Text('No products available'));
             }
 
             final products = snapshot.data!;
@@ -55,11 +55,12 @@ class new_arrival extends StatelessWidget {
                     title: products[index].name,
                     price: products[index].price,
                     press: () {
-                      Navigator.pushNamed(
-                        context,
-                        productDetailsScreenRoute,
-                        arguments: index.isEven,
-                      );
+            Navigator.pushNamed(
+  context,
+  productDetailsScreenRoute,
+  arguments: products[index],  // Pass the actual ProductModel object here
+);
+
                     },
                   ),
                 ),

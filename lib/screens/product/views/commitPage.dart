@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 
 class BookReview extends StatefulWidget {
+  const BookReview({super.key});
+
   @override
   _BookReviewState createState() => _BookReviewState();
 }
@@ -10,7 +12,7 @@ class _BookReviewState extends State<BookReview> {
   final _nameController = TextEditingController();
   final _reviewController = TextEditingController();
 
-  List<Review> _reviews = []; // Initially empty list
+  final List<Review> _reviews = []; // Initially empty list
 
   void _submitReview() {
     if (_formKey.currentState!.validate()) {
@@ -28,7 +30,7 @@ class _BookReviewState extends State<BookReview> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Book Reviews'),
+        title: const Text('Book Reviews'),
       ),
       body: Column(
         children: [
@@ -52,7 +54,7 @@ class _BookReviewState extends State<BookReview> {
                 children: [
                   TextFormField(
                     controller: _nameController,
-                    decoration: InputDecoration(labelText: 'Your Name'),
+                    decoration: const InputDecoration(labelText: 'Your Name'),
                     validator: (value) {
                       if (value == null || value.isEmpty) {
                         return 'Please enter your name';
@@ -62,7 +64,7 @@ class _BookReviewState extends State<BookReview> {
                   ),
                   TextFormField(
                     controller: _reviewController,
-                    decoration: InputDecoration(labelText: 'Your Review'),
+                    decoration: const InputDecoration(labelText: 'Your Review'),
                     validator: (value) {
                       if (value == null || value.isEmpty) {
                         return 'Please enter your review';
@@ -72,7 +74,7 @@ class _BookReviewState extends State<BookReview> {
                   ),
                   ElevatedButton(
                     onPressed: _submitReview,
-                    child: Text('Submit Review'),
+                    child: const Text('Submit Review'),
                   ),
                 ],
               ),

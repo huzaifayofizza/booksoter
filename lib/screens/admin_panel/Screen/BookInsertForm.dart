@@ -12,6 +12,8 @@ import 'package:flutter/services.dart';
 import 'package:image_picker/image_picker.dart';
 
 class BookStoreAdmin extends StatefulWidget {
+  const BookStoreAdmin({super.key});
+
   @override
   State<BookStoreAdmin> createState() => _BookStoreAdminState();
 }
@@ -93,7 +95,7 @@ class _BookStoreAdminState extends State<BookStoreAdmin> {
   Future<void> _saveProduct() async {
     if (!_formKey.currentState!.validate() || _imageFile == null) {
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('Please fill all fields and select an image')),
+        const SnackBar(content: Text('Please fill all fields and select an image')),
       );
       return;
     }
@@ -114,10 +116,8 @@ class _BookStoreAdminState extends State<BookStoreAdmin> {
         'description': _descriptionController.text,
         'price': double.parse(_priceController.text),
         'imageUrl': _imageUrl,
-         'createdAt': FieldValue.serverTimestamp(),
-         'salesCount' : 0,
-
-         
+        'createdAt': FieldValue.serverTimestamp(),
+        'salesCount': 0,
       });
 
       // Clear form fields after successful submission
@@ -132,7 +132,7 @@ class _BookStoreAdminState extends State<BookStoreAdmin> {
       });
 
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('Product uploaded successfully!')),
+        const SnackBar(content: Text('Product uploaded successfully!')),
       );
     } catch (e) {
       ScaffoldMessenger.of(context).showSnackBar(
@@ -173,6 +173,7 @@ class _BookStoreAdminState extends State<BookStoreAdmin> {
                       if (value == null || value.isEmpty) {
                         return 'Please enter a title.';
                       }
+                      return null;
                     },
                   ),
                   const SizedBox(height: defaultPadding),
@@ -185,6 +186,7 @@ class _BookStoreAdminState extends State<BookStoreAdmin> {
                       if (value == null || value.isEmpty) {
                         return 'Please enter a author.';
                       }
+                      return null;
                     },
                   ),
                   const SizedBox(height: defaultPadding),
@@ -197,6 +199,7 @@ class _BookStoreAdminState extends State<BookStoreAdmin> {
                       if (value == null || value.isEmpty) {
                         return 'Please enter a Genre.';
                       }
+                      return null;
                     },
                   ),
                   const SizedBox(height: defaultPadding),
@@ -211,6 +214,7 @@ class _BookStoreAdminState extends State<BookStoreAdmin> {
                       if (value == null || value.isEmpty) {
                         return 'Please enter a Description.';
                       }
+                      return null;
                     },
                   ),
                   const SizedBox(height: defaultPadding),
@@ -223,6 +227,7 @@ class _BookStoreAdminState extends State<BookStoreAdmin> {
                       if (value == null || value.isEmpty) {
                         return 'Please enter a Price.';
                       }
+                      return null;
                     },
                   ),
                   const SizedBox(height: defaultPadding),
@@ -234,15 +239,15 @@ class _BookStoreAdminState extends State<BookStoreAdmin> {
                     kIsWeb
                         ? Image.network(_imageFile!.path, height: 200)
                         : Image.file(File(_imageFile!.path), height: 200),
-                    SizedBox(height: 16),
+                    const SizedBox(height: 16),
                   ],
                   const SizedBox(height: defaultPadding),
-                  SizedBox(height: 24),
+                  const SizedBox(height: 24),
                   ElevatedButton(
                     onPressed: _isLoading ? null : _saveProduct,
                     child: _isLoading
-                        ? CircularProgressIndicator()
-                        : Text('Upload Product'),
+                        ? const CircularProgressIndicator()
+                        : const Text('Upload Product'),
                   ),
                 ],
               ),

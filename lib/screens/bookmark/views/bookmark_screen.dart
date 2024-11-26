@@ -5,49 +5,76 @@ import 'package:bookstore/route/route_constants.dart';
 
 import '../../../constants.dart';
 
-class BookmarkScreen extends StatelessWidget {
+class BookmarkScreen extends StatefulWidget {
   const BookmarkScreen({super.key});
+
+  @override
+  _BookmarkScreenState createState() => _BookmarkScreenState();
+}
+
+class _BookmarkScreenState extends State<BookmarkScreen> {
+  bool isLoading = true;
+  List<ProductModel> bookmarkedProducts = [];
+
+  @override
+  void initState() {
+    super.initState();
+    _fetchBookmarkedProducts();
+  }
+
+  // Fetch bookmarked products
+  Future<void> _fetchBookmarkedProducts() async {
+    List<ProductModel> products = await fetchBookmarkedProducts();
+    setState(() {
+      bookmarkedProducts = products;
+      isLoading = false;
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: CustomScrollView(
-        // slivers: [
-        //   // While loading use 👇
-        //   //  BookMarksSlelton(),
-        //   SliverPadding(
-        //     padding: const EdgeInsets.symmetric(
-        //       horizontal: defaultPadding,
-        //       vertical: defaultPadding,
-        //     ),
-        //     sliver: SliverGrid(
-        //       gridDelegate: const SliverGridDelegateWithMaxCrossAxisExtent(
-        //         maxCrossAxisExtent: 210.0,
-        //         mainAxisSpacing: defaultPadding,
-        //         crossAxisSpacing: defaultPadding,
-        //         childAspectRatio: 0.62,
-        //       ),
-        //       delegate: SliverChildBuilderDelegate(
-        //         (BuildContext context, int index) {
-        //           return ProductCard(
-        //             image: demoPopularProducts[index].image,
-        //             brandName: demoPopularProducts[index].brandName,
-        //             title: demoPopularProducts[index].title,
-        //             price: demoPopularProducts[index].price,
-        //             priceAfetDiscount:
-        //                 demoPopularProducts[index].priceAfetDiscount,
-        //             dicountpercent: demoPopularProducts[index].dicountpercent,
-        //             press: () {
-        //               Navigator.pushNamed(context, productDetailsScreenRoute);
-        //             },
-        //           );
-        //         },
-        //         childCount: demoPopularProducts.length,
-        //       ),
-        //     ),
-        //   ),
-        // ],
-      ),
+      body: isLoading
+          ? const Center(child: CircularProgressIndicator())
+          : bookmarkedProducts.isEmpty
+              ? const Center(child: Text('No bookmarked products'))
+              : CustomScrollView(
+                  slivers: [
+                    SliverPadding(
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: defaultPadding,
+                        vertical: defaultPadding,
+                      ),
+                      sliver: SliverGrid(
+                        gridDelegate:
+                            const SliverGridDelegateWithMaxCrossAxisExtent(
+                          maxCrossAxisExtent: 180.0,
+                          mainAxisSpacing: defaultPadding,
+                          crossAxisSpacing: defaultPadding,
+                          childAspectRatio: 0.62,
+                        ),
+                        delegate: SliverChildBuilderDelegate(
+                          (BuildContext context, int index) {
+                            return ProductCard(
+                              image: bookmarkedProducts[index].imageUrl,
+                              brandName: bookmarkedProducts[index].author,
+                              title: bookmarkedProducts[index].name,
+                              price: bookmarkedProducts[index].price,
+                              press: () {
+                                Navigator.pushNamed(
+                                  context,
+                                  productDetailsScreenRoute,
+                                  arguments: bookmarkedProducts[index],
+                                );
+                              },
+                            );
+                          },
+                          childCount: bookmarkedProducts.length,
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
     );
   }
 }

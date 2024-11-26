@@ -3,6 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:bookstore/screens/admin_panel/Screen/DrawerWidget.dart';
 
 class AdminOrderManage extends StatefulWidget {
+  const AdminOrderManage({super.key});
+
   @override
   State<AdminOrderManage> createState() => _AdminOrderManageState();
 }
@@ -52,7 +54,7 @@ class _AdminOrderManageState extends State<AdminOrderManage> {
       ),
       drawer: DrawerWidget(),
       body: isLoading
-          ? Center(child: CircularProgressIndicator()) // Show loader
+          ? const Center(child: CircularProgressIndicator()) // Show loader
           : SingleChildScrollView(
               child: Center(
                 child: Column(

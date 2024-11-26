@@ -372,7 +372,7 @@ void _showErrorSnackBar(String message) {
                       ],
                     ),
                     const SizedBox(height: 15),
-                    Center(
+                    const Center(
                       child: Text(
                         "OR",
                         style: TextStyle(

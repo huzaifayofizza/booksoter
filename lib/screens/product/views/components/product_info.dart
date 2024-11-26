@@ -8,17 +8,15 @@ class ProductInfo extends StatelessWidget {
   const ProductInfo({
     super.key,
     required this.title,
-    required this.brand,
+    required this.author,
     required this.description,
     required this.rating,
     required this.numOfReviews,
-    required this.isAvailable,
   });
 
-  final String title, brand, description;
+  final String title, author, description;
   final double rating;
   final int numOfReviews;
-  final bool isAvailable;
 
   @override
   Widget build(BuildContext context) {
@@ -29,7 +27,7 @@ class ProductInfo extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(
-              brand.toUpperCase(),
+              author.toUpperCase(),
               style: const TextStyle(fontWeight: FontWeight.w500),
             ),
             const SizedBox(height: defaultPadding / 2),
@@ -41,7 +39,6 @@ class ProductInfo extends StatelessWidget {
             const SizedBox(height: defaultPadding),
             Row(
               children: [
-                ProductAvailabilityTag(isAvailable: isAvailable),
                 const Spacer(),
                 SvgPicture.asset("assets/icons/Star_filled.svg"),
                 const SizedBox(width: defaultPadding / 4),
@@ -54,7 +51,7 @@ class ProductInfo extends StatelessWidget {
             ),
             const SizedBox(height: defaultPadding),
             Text(
-              "Product info",
+              "Description",
               style: Theme.of(context)
                   .textTheme
                   .titleMedium!

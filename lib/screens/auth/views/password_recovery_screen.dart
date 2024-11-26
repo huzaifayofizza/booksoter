@@ -5,13 +5,15 @@ class PasswordRecoveryScreen extends StatelessWidget {
   final TextEditingController _emailController = TextEditingController();
   final FirebaseAuth _auth = FirebaseAuth.instance;
 
+  PasswordRecoveryScreen({super.key});
+
   Future<void> resetPassword(BuildContext context) async {
     final email = _emailController.text.trim(); // Trim whitespace
  
     // Validate email format
     if (!RegExp(r'^[^@]+@[^@]+\.[^@]+').hasMatch(email)) {
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text("Please enter a valid email address.")),
+        const SnackBar(content: Text("Please enter a valid email address.")),
       );
       return;
     }
@@ -20,22 +22,22 @@ class PasswordRecoveryScreen extends StatelessWidget {
       // Send password reset email directly; Firebase will throw if the email does not exist
       await _auth.sendPasswordResetEmail(email: email);
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text("Password reset email sent!")),
+        const SnackBar(content: Text("Password reset email sent!")),
       );
 
       // Delay and then go back to the previous screen
-      await Future.delayed(Duration(seconds: 2));
+      await Future.delayed(const Duration(seconds: 2));
       Navigator.pop(context);
 
     } on FirebaseAuthException catch (e) {
       // Handle specific Firebase exceptions
       if (e.code == 'user-not-found') {
         ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text("No account found with this email.")),
+          const SnackBar(content: Text("No account found with this email.")),
         );
       } else if (e.code == 'invalid-email') {
         ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text("The email address is invalid.")),
+          const SnackBar(content: Text("The email address is invalid.")),
         );
       } else {
         ScaffoldMessenger.of(context).showSnackBar(
@@ -44,7 +46,7 @@ class PasswordRecoveryScreen extends StatelessWidget {
       }
     } catch (e) {
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text("An unknown error occurred.")),
+        const SnackBar(content: Text("An unknown error occurred.")),
       );
     }
   }
@@ -57,7 +59,7 @@ class PasswordRecoveryScreen extends StatelessWidget {
         backgroundColor: Colors.white,
         elevation: 0,
         leading: IconButton(
-          icon: Icon(Icons.arrow_back, color: Colors.black),
+          icon: const Icon(Icons.arrow_back, color: Colors.black),
           onPressed: () {
             Navigator.pop(context);
           },
@@ -68,7 +70,7 @@ class PasswordRecoveryScreen extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text(
+            const Text(
               "Password recovery",
               style: TextStyle(
                 fontSize: 28,
@@ -76,19 +78,19 @@ class PasswordRecoveryScreen extends StatelessWidget {
                 color: Colors.black,
               ),
             ),
-            SizedBox(height: 8),
-            Text(
+            const SizedBox(height: 8),
+            const Text(
               "Enter your E-mail address to recover your password",
               style: TextStyle(
                 fontSize: 16,
                 color: Colors.grey,
               ),
             ),
-            SizedBox(height: 30),
+            const SizedBox(height: 30),
             TextField(
               controller: _emailController,
               decoration: InputDecoration(
-                prefixIcon: Icon(Icons.email_outlined, color: Colors.grey),
+                prefixIcon: const Icon(Icons.email_outlined, color: Colors.grey),
                 hintText: "Email address",
                 filled: true,
                 fillColor: Colors.grey[100],
@@ -99,19 +101,19 @@ class PasswordRecoveryScreen extends StatelessWidget {
               ),
               keyboardType: TextInputType.emailAddress,
             ),
-            Spacer(),
+            const Spacer(),
             SizedBox(
               width: double.infinity,
               child: ElevatedButton(
                 style: ElevatedButton.styleFrom(
-                  backgroundColor: Color(0xFF7C4DFF), // Purple color
+                  backgroundColor: const Color(0xFF7C4DFF), // Purple color
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(12),
                   ),
-                  padding: EdgeInsets.symmetric(vertical: 16),
+                  padding: const EdgeInsets.symmetric(vertical: 16),
                 ),
                 onPressed: () => resetPassword(context),
-                child: Text(
+                child: const Text(
                   "Email Sent To Recover Pass",
                   style: TextStyle(fontSize: 16, color: Colors.white),
                 ),

@@ -3,25 +3,27 @@ import 'package:bookstore/route/route_constants.dart';
 import 'package:flutter/material.dart';
 
 class OrderConfirmationPage extends StatelessWidget {
+  const OrderConfirmationPage({super.key});
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Order Confirmation'),
+        title: const Text('Order Confirmation'),
       ),
       body: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             // Checkmark icon
-            Icon(
+            const Icon(
               Icons.check_circle,
               color: Colors.green,
               size: 100,
             ),
 
             // Thank you message
-            Text(
+            const Text(
               'Thank you!',
               style: TextStyle(
                 fontSize: 24,
@@ -31,27 +33,27 @@ class OrderConfirmationPage extends StatelessWidget {
             const SizedBox(height: defaultPadding),
 
             // Order placed message
-            Text('Your order has been placed successfully.'),
+            const Text('Your order has been placed successfully.'),
             const SizedBox(height: defaultPadding),
 
             // Order details
             Card(
-              margin: EdgeInsets.symmetric(vertical: 16),
+              margin: const EdgeInsets.symmetric(vertical: 16),
               child: Padding(
-                padding: EdgeInsets.all(16),
+                padding: const EdgeInsets.all(16),
                 child: Column(
                   children: [
                     // List of items
                     ListTile(
                       leading: Image.asset(
                           'assets/cake_image.png'), // Replace with your image path
-                      title: Text('Cake'),
-                      trailing: Text('\$39.00'),
+                      title: const Text('Cake'),
+                      trailing: const Text('\$39.00'),
                     ),
                     // ... Add more items as needed
                     const SizedBox(height: defaultPadding),
                     // Total
-                    ListTile(
+                    const ListTile(
                       title: Text('Total'),
                       trailing: Text('\$39.00'),
                     ),
@@ -65,12 +67,12 @@ class OrderConfirmationPage extends StatelessWidget {
               onPressed: () {
                 Navigator.pushNamed(context, entryPointScreenRoute);
               },
-              child: Text('THank You...'),
+              child: const Text('THank You...'),
             ),
             const SizedBox(height: defaultPadding),
-            Text('Your Book Were Delevery At Your Home In 5 to 6 Days'),
+            const Text('Your Book Were Delevery At Your Home In 5 to 6 Days'),
             const SizedBox(height: defaultPadding),
-            Text('thanks you to touch this website...')
+            const Text('thanks you to touch this website...')
           ],
         ),
       ),

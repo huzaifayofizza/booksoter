@@ -12,11 +12,11 @@ class BookCategory extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    return const Scaffold(
       body: CustomScrollView(slivers: [
         SliverToBoxAdapter(child: Categories()),
         SliverPadding(
-          padding: const EdgeInsets.symmetric(
+          padding: EdgeInsets.symmetric(
             horizontal: defaultPadding,
             vertical: defaultPadding,
           ),

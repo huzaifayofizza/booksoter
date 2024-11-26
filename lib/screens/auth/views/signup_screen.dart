@@ -95,7 +95,7 @@ Future<void> _register() async {
 // Start email verification timer
 Timer? _verificationTimer;
 void _startEmailVerificationTimer(User user) {
-  _verificationTimer = Timer.periodic(Duration(seconds: 5), (timer) async {
+  _verificationTimer = Timer.periodic(const Duration(seconds: 5), (timer) async {
     // Refresh user data
     await user.reload();
     User? currentUser = FirebaseAuth.instance.currentUser; // Retrieve current user again
@@ -128,7 +128,7 @@ void _startEmailVerificationTimer(User user) {
   });
 
   // Cancel verification timer after 2 minutes
-  Future.delayed(Duration(minutes: 2), () {
+  Future.delayed(const Duration(minutes: 2), () {
     User? currentUser = FirebaseAuth.instance.currentUser;
     if (currentUser != null && !currentUser.emailVerified) {
       _verificationTimer?.cancel();
@@ -299,7 +299,7 @@ void dispose() {
                   ),
                         const SizedBox(height: defaultPadding),
                         isLoading
-                          ? Center(child: CircularProgressIndicator())
+                          ? const Center(child: CircularProgressIndicator())
                           : ElevatedButton(
                               onPressed: isChecked ? _register : null,
                               child: const Text("Sign Up"),
@@ -334,16 +334,18 @@ void dispose() {
 }
 
 class LoaderPage extends StatelessWidget {
+  const LoaderPage({super.key});
+
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    return const Scaffold(
       body: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             CircularProgressIndicator(),
-            const SizedBox(height: 20),
-            const Text("Please check your email for verification."),
+            SizedBox(height: 20),
+            Text("Please check your email for verification."),
           ],
         ),
       ),

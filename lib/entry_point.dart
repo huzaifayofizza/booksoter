@@ -4,8 +4,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:bookstore/constants.dart';
 import 'package:bookstore/route/screen_export.dart';
-import 'package:bookstore/screens/admin_panel/Screen/BookInsertForm.dart'
-    show AddBookForm;
 
 class EntryPoint extends StatefulWidget {
   const EntryPoint({super.key});

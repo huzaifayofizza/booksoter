@@ -7,6 +7,8 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
 class AdminUserAccount extends StatefulWidget {
+  const AdminUserAccount({super.key});
+
   @override
   _AdminUserAccountState createState() => _AdminUserAccountState();
 }
@@ -50,7 +52,7 @@ class _AdminUserAccountState extends State<AdminUserAccount> {
       // Prevent deleting the currently logged-in user
       final auth = FirebaseAuth.instance;
       if (auth.currentUser?.email == email) {
-        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+        ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
           content: Text('You cannot delete the currently logged-in user.'),
         ));
         return;
@@ -128,7 +130,7 @@ class _AdminUserAccountState extends State<AdminUserAccount> {
               ),
               const SizedBox(height: defaultPadding),
               DataTable(
-                columns: [
+                columns: const [
                   DataColumn(label: Text('Email')),
                   DataColumn(label: Text('Role')),
                   DataColumn(label: Text('Actions')),
@@ -143,7 +145,7 @@ class _AdminUserAccountState extends State<AdminUserAccount> {
                         Row(
                           children: [
                             IconButton(
-                              icon: Icon(Icons.edit),
+                              icon: const Icon(Icons.edit),
                               onPressed: () {
                                 // Handle role change
                                 _changeRole(user.email,
@@ -151,7 +153,7 @@ class _AdminUserAccountState extends State<AdminUserAccount> {
                               },
                             ),
                             IconButton(
-                              icon: Icon(Icons.delete),
+                              icon: const Icon(Icons.delete),
                               onPressed: () {
                                 // Confirm before deleting
                                 _showDeleteConfirmation(user.email);
@@ -177,17 +179,17 @@ class _AdminUserAccountState extends State<AdminUserAccount> {
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
-          title: Text('Delete User'),
-          content: Text('Are you sure you want to delete this user?'),
+          title: const Text('Delete User'),
+          content: const Text('Are you sure you want to delete this user?'),
           actions: <Widget>[
             TextButton(
-              child: Text('Cancel'),
+              child: const Text('Cancel'),
               onPressed: () {
                 Navigator.of(context).pop();
               },
             ),
             TextButton(
-              child: Text('Delete'),
+              child: const Text('Delete'),
               onPressed: () {
                 _deleteUser(email);
                 Navigator.of(context).pop();

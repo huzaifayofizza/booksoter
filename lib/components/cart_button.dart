@@ -3,13 +3,14 @@ import 'package:flutter/material.dart';
 import '../constants.dart';
 
 class CartButton extends StatelessWidget {
+  // Ensure price is a required named parameter, and others are optional
   const CartButton({
-    super.key,
+    Key? key,
     required this.price,
-    this.title = "Buy Now",
-    this.subTitle = "Unit price",
+    this.title = "Buy Now", // Default value for title
+    this.subTitle = "Unit price", // Default value for subTitle
     required this.press,
-  });
+  }) : super(key: key);
 
   final double price;
   final String title, subTitle;

@@ -3,6 +3,8 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 
 class BookStoreView extends StatefulWidget {
+  const BookStoreView({super.key});
+
   @override
   _BookStoreViewState createState() => _BookStoreViewState();
 }
@@ -71,12 +73,12 @@ class _BookStoreViewState extends State<BookStoreView> {
       });
 
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('Book deleted successfully')),
+        const SnackBar(content: Text('Book deleted successfully')),
       );
     } catch (e) {
       print('Error deleting document: $e');
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('Error deleting book')),
+        const SnackBar(content: Text('Error deleting book')),
       );
     }
   }
@@ -89,7 +91,7 @@ class _BookStoreViewState extends State<BookStoreView> {
       ),
       drawer: DrawerWidget(),
       body: isLoading
-          ? Center(child: CircularProgressIndicator())
+          ? const Center(child: CircularProgressIndicator())
           : ListView.builder(
               itemCount: books.length,
               itemBuilder: (context, index) {
@@ -107,13 +109,12 @@ class BookItem extends StatelessWidget {
   final Book book;
   final VoidCallback onDelete; // Callback for delete action
 
-  const BookItem({Key? key, required this.book, required this.onDelete})
-      : super(key: key);
+  const BookItem({super.key, required this.book, required this.onDelete});
 
   @override
   Widget build(BuildContext context) {
     return Card(
-      margin: EdgeInsets.all(10.0),
+      margin: const EdgeInsets.all(10.0),
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -130,19 +131,19 @@ class BookItem extends StatelessWidget {
               width: 100,
               height: 150,
               color: Colors.grey[300],
-              child: Icon(Icons.image_not_supported),
+              child: const Icon(Icons.image_not_supported),
             ),
-          SizedBox(width: 10.0),
+          const SizedBox(width: 10.0),
           // Book Details
           Expanded(
             child: Padding(
-              padding: EdgeInsets.all(10.0),
+              padding: const EdgeInsets.all(10.0),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
                     book.title,
-                    style: TextStyle(
+                    style: const TextStyle(
                       fontSize: 18.0,
                       fontWeight: FontWeight.bold,
                     ),
@@ -151,22 +152,22 @@ class BookItem extends StatelessWidget {
                     'by ${book.author}',
                     style: TextStyle(fontSize: 14.0, color: Colors.grey[700]),
                   ),
-                  SizedBox(height: 5.0),
+                  const SizedBox(height: 5.0),
                   Text(
                     'Genre: ${book.genre}',
                     style: TextStyle(fontSize: 12.0, color: Colors.grey[600]),
                   ),
-                  SizedBox(height: 10.0),
+                  const SizedBox(height: 10.0),
                   Text(
                     book.description,
                     style: TextStyle(fontSize: 12.0, color: Colors.grey[500]),
                     maxLines: 3,
                     overflow: TextOverflow.ellipsis,
                   ),
-                  SizedBox(height: 10.0),
+                  const SizedBox(height: 10.0),
                   Text(
                     '\$${book.price.toStringAsFixed(2)}',
-                    style: TextStyle(
+                    style: const TextStyle(
                       fontSize: 16.0,
                       fontWeight: FontWeight.bold,
                       color: Colors.green,
@@ -178,7 +179,7 @@ class BookItem extends StatelessWidget {
           ),
           // Delete Button
           IconButton(
-            icon: Icon(Icons.delete, color: Colors.red),
+            icon: const Icon(Icons.delete, color: Colors.red),
             onPressed: onDelete, // Call delete action
           ),
         ],
