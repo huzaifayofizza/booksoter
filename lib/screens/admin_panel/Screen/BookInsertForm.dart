@@ -114,6 +114,10 @@ class _BookStoreAdminState extends State<BookStoreAdmin> {
         'description': _descriptionController.text,
         'price': double.parse(_priceController.text),
         'imageUrl': _imageUrl,
+         'createdAt': FieldValue.serverTimestamp(),
+         'salesCount' : 0,
+
+         
       });
 
       // Clear form fields after successful submission

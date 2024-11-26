@@ -1,13 +1,14 @@
+import 'package:bookstore/screens/home/views/components/new_arrival.dart';
 import 'package:bookstore/screens/home/views/components/offers_carousel.dart';
 import 'package:flutter/material.dart';
 import 'package:bookstore/components/Banner/S/banner_s_style_1.dart';
 import 'package:bookstore/components/Banner/S/banner_s_style_5.dart';
 import 'package:bookstore/constants.dart';
-import 'package:bookstore/route/screen_export.dart';
+
 
 import 'components/best_sellers.dart';
 
-import 'components/offer_carousel_and_categories.dart';
+
 import 'components/popular_products.dart';
 
 class HomeScreen extends StatelessWidget {
@@ -24,6 +25,8 @@ class HomeScreen extends StatelessWidget {
             SliverToBoxAdapter(
               child: Column(
                 children: [
+                  const SizedBox(height: defaultPadding * 1.5),
+                  const SizedBox(height: defaultPadding / 4),
                   // While loading use 👇
                   // const BannerMSkelton(),‚
                   BannerSStyle1(
@@ -36,7 +39,7 @@ class HomeScreen extends StatelessWidget {
                 ],
               ),
             ),
-            const SliverToBoxAdapter(child: BestSellers()),
+            const SliverToBoxAdapter(child: new_arrival()),
             SliverToBoxAdapter(
               child: Column(
                 children: [

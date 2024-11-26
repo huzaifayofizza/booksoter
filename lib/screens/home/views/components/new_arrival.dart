@@ -1,15 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:bookstore/components/product/product_card.dart';
 import 'package:bookstore/models/product_model.dart';
-import 'package:bookstore/route/screen_export.dart';
 
 import '../../../../constants.dart';
+import '../../../../route/route_constants.dart';
 
-class PopularProducts extends StatelessWidget {
-  const PopularProducts({super.key});
-
-  Future<List<ProductModel>> fetchPopularProducts() async {
-    return await fetchProducts(); // Use the fetchProducts function from your ProductModel file
+class new_arrival extends StatelessWidget {
+  const new_arrival({
+    super.key,
+  });
+  Future<List<ProductModel>> fetchBestProducts() async {
+    return await fetchnew_arrival(); // Use the fetchProducts function from your ProductModel file
   }
 
   @override
@@ -21,12 +22,12 @@ class PopularProducts extends StatelessWidget {
         Padding(
           padding: const EdgeInsets.all(defaultPadding),
           child: Text(
-            "Popular Products",
+            "New Arrival",
             style: Theme.of(context).textTheme.titleSmall,
           ),
         ),
         FutureBuilder<List<ProductModel>>(
-          future: fetchPopularProducts(),
+          future: fetchBestProducts(),
           builder: (context, snapshot) {
             if (snapshot.connectionState == ConnectionState.waiting) {
               return const Center(child: CircularProgressIndicator());
