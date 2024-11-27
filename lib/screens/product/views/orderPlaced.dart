@@ -65,7 +65,7 @@ class OrderConfirmationPage extends StatelessWidget {
             // Action button (e.g., View Order Details)
             ElevatedButton(
               onPressed: () {
-                Navigator.pushNamed(context, PaymentPageScreenRoute);
+                Navigator.pushNamed(context, entryPointScreenRoute);
               },
               child: const Text('THank You...'),
             ),

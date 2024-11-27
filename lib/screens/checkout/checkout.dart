@@ -1,6 +1,5 @@
-import 'package:bookstore/constants.dart';
-import 'package:bookstore/route/screen_export.dart';
 import 'package:flutter/material.dart';
+import '../../route/route_constants.dart';
 
 class CheckoutPage extends StatefulWidget {
   const CheckoutPage({super.key});
@@ -18,9 +17,14 @@ class _CheckoutPageState extends State<CheckoutPage> {
   final _cityController = TextEditingController();
   final _stateController = TextEditingController();
   final _zipCodeController = TextEditingController();
-  final bool _isGift = false;
+  final _cardNumberController = TextEditingController();
+  final _expiryDateController = TextEditingController();
+  final _cvvController = TextEditingController();
   bool _is12MonthWarranty = false;
   bool _is27MonthWarranty = false;
+
+  // Animation states
+  bool _showPaymentFields = false;
 
   @override
   Widget build(BuildContext context) {
@@ -28,7 +32,7 @@ class _CheckoutPageState extends State<CheckoutPage> {
       appBar: AppBar(
         title: const Text('Checkout'),
       ),
-      body: Padding(
+      body: SingleChildScrollView(
         padding: const EdgeInsets.all(16.0),
         child: Form(
           key: _formKey,
@@ -43,10 +47,13 @@ class _CheckoutPageState extends State<CheckoutPage> {
                   if (value == null || value.isEmpty) {
                     return 'Please enter your email address';
                   }
+                  if (!RegExp(r'^[^@]+@[^@]+\.[^@]+').hasMatch(value)) {
+                    return 'Please enter a valid email address';
+                  }
                   return null;
                 },
               ),
-              const SizedBox(height: defaultPadding),
+              const SizedBox(height: 16),
 
               // Name Fields
               Row(
@@ -54,7 +61,8 @@ class _CheckoutPageState extends State<CheckoutPage> {
                   Expanded(
                     child: TextFormField(
                       controller: _firstNameController,
-                      decoration: const InputDecoration(labelText: 'First Name*'),
+                      decoration:
+                          const InputDecoration(labelText: 'First Name*'),
                       validator: (value) {
                         if (value == null || value.isEmpty) {
                           return 'Please enter your first name';
@@ -67,7 +75,8 @@ class _CheckoutPageState extends State<CheckoutPage> {
                   Expanded(
                     child: TextFormField(
                       controller: _lastNameController,
-                      decoration: const InputDecoration(labelText: 'Last Name*'),
+                      decoration:
+                          const InputDecoration(labelText: 'Last Name*'),
                       validator: (value) {
                         if (value == null || value.isEmpty) {
                           return 'Please enter your last name';
@@ -78,7 +87,7 @@ class _CheckoutPageState extends State<CheckoutPage> {
                   ),
                 ],
               ),
-              const SizedBox(height: defaultPadding),
+              const SizedBox(height: 16),
 
               // Address Fields
               TextFormField(
@@ -91,7 +100,7 @@ class _CheckoutPageState extends State<CheckoutPage> {
                   return null;
                 },
               ),
-              const SizedBox(height: defaultPadding),
+              const SizedBox(height: 16),
 
               Row(
                 children: [
@@ -107,7 +116,6 @@ class _CheckoutPageState extends State<CheckoutPage> {
                       },
                     ),
                   ),
-                  const SizedBox(height: defaultPadding),
                   const SizedBox(width: 16),
                   Expanded(
                     child: TextFormField(
@@ -121,28 +129,29 @@ class _CheckoutPageState extends State<CheckoutPage> {
                       },
                     ),
                   ),
-                  const SizedBox(height: defaultPadding),
-                  const SizedBox(width: 16),
-                  Expanded(
-                    child: TextFormField(
-                      controller: _zipCodeController,
-                      decoration: const InputDecoration(labelText: 'ZIP Code*'),
-                      validator: (value) {
-                        if (value == null || value.isEmpty) {
-                          return 'Please enter your ZIP code';
-                        }
-                        return null;
-                      },
-                    ),
-                  ),
                 ],
               ),
-              const SizedBox(height: defaultPadding),
+              const SizedBox(height: 16),
+
+              TextFormField(
+                controller: _zipCodeController,
+                decoration: const InputDecoration(labelText: 'ZIP Code*'),
+                validator: (value) {
+                  if (value == null || value.isEmpty) {
+                    return 'Please enter your ZIP code';
+                  }
+                  if (!RegExp(r'^\d{5}$').hasMatch(value)) {
+                    return 'Please enter a valid 5-digit ZIP code';
+                  }
+                  return null;
+                },
+              ),
+              const SizedBox(height: 16),
 
               // Warranty Options
               CheckboxListTile(
                 title: const Text(
-                    'Add 12 additional months for  175 per Peloton Bike, 24 total months of coverage'),
+                    'Add 12 additional months for 175 per Peloton Bike'),
                 value: _is12MonthWarranty,
                 onChanged: (value) {
                   setState(() {
@@ -150,10 +159,9 @@ class _CheckoutPageState extends State<CheckoutPage> {
                   });
                 },
               ),
-              const SizedBox(height: defaultPadding),
               CheckboxListTile(
                 title: const Text(
-                    'Add 27 additional months for 230 per Peloton Bike+, 39 total months of coverage'),
+                    'Add 27 additional months for 230 per Peloton Bike+'),
                 value: _is27MonthWarranty,
                 onChanged: (value) {
                   setState(() {
@@ -161,21 +169,114 @@ class _CheckoutPageState extends State<CheckoutPage> {
                   });
                 },
               ),
-              const SizedBox(height: defaultPadding),
+              const SizedBox(height: 16),
 
-              // Gift Option
-
-              // Payment Options
-              // ... (Implement credit card and Affirm payment options)
+              // Payment Section
+              GestureDetector(
+                onTap: () {
+                  setState(() {
+                    _showPaymentFields = !_showPaymentFields;
+                  });
+                },
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    const Text(
+                      'Payment Details',
+                      style:
+                          TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+                    ),
+                    Icon(
+                      _showPaymentFields
+                          ? Icons.expand_less
+                          : Icons.expand_more,
+                      color: Colors.grey,
+                    ),
+                  ],
+                ),
+              ),
+              AnimatedOpacity(
+                duration: const Duration(milliseconds: 300),
+                opacity: _showPaymentFields ? 1.0 : 0.0,
+                child: AnimatedContainer(
+                  duration: const Duration(milliseconds: 300),
+                  curve: Curves.easeInOut,
+                  height: _showPaymentFields ? null : 0,
+                  child: Column(
+                    children: [
+                      const SizedBox(height: 8),
+                      TextFormField(
+                        controller: _cardNumberController,
+                        decoration:
+                            const InputDecoration(labelText: 'Card Number*'),
+                        keyboardType: TextInputType.number,
+                        validator: (value) {
+                          if (value == null || value.isEmpty) {
+                            return 'Please enter your card number';
+                          }
+                          if (!RegExp(r'^\d{16}$').hasMatch(value)) {
+                            return 'Please enter a valid 16-digit card number';
+                          }
+                          return null;
+                        },
+                      ),
+                      const SizedBox(height: 8),
+                      Row(
+                        children: [
+                          Expanded(
+                            child: TextFormField(
+                              controller: _expiryDateController,
+                              decoration: const InputDecoration(
+                                  labelText: 'Expiry Date (MM/YY)*'),
+                              keyboardType: TextInputType.datetime,
+                              validator: (value) {
+                                if (value == null || value.isEmpty) {
+                                  return 'Please enter the expiry date';
+                                }
+                                if (!RegExp(r'^(0[1-9]|1[0-2])\/\d{2}$')
+                                    .hasMatch(value)) {
+                                  return 'Please enter a valid expiry date';
+                                }
+                                return null;
+                              },
+                            ),
+                          ),
+                          const SizedBox(width: 16),
+                          Expanded(
+                            child: TextFormField(
+                              controller: _cvvController,
+                              decoration:
+                                  const InputDecoration(labelText: 'CVV*'),
+                              keyboardType: TextInputType.number,
+                              validator: (value) {
+                                if (value == null || value.isEmpty) {
+                                  return 'Please enter the CVV';
+                                }
+                                if (!RegExp(r'^\d{3}$').hasMatch(value)) {
+                                  return 'Please enter a valid 3-digit CVV';
+                                }
+                                return null;
+                              },
+                            ),
+                          ),
+                        ],
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+              const SizedBox(height: 16),
 
               // Submit Button
-              ElevatedButton(
-                onPressed: () {
-                  if (_formKey.currentState!.validate()) {
-                    Navigator.pushNamed(context, OrderConfimScreenRoute);
-                  }
-                },
-                child: const Text('Place Order'),
+              Center(
+                child: ElevatedButton(
+                  onPressed: () {
+                    if (_formKey.currentState!.validate()) {
+                      Navigator.pushNamed(context, OrderConfimScreenRoute);
+                    }
+                  },
+                  child: const Text('Order Confrim'),
+                ),
               ),
             ],
           ),
