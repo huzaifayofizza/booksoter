@@ -67,3 +67,4 @@ const String AdminOrderManageSCreenRoute = "AdminOrderManage";
 const String ShopcategoryScreenRoute = "CategoryScreenRoute";
 const String BookcategoryScreenRoute = "BookCategoryPage";
 const String commitPageScreenRoute = "CommitPage";
+const String PaymentPageScreenRoute = "PaymentPage";

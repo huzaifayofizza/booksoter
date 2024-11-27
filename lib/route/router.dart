@@ -43,6 +43,10 @@ Route<dynamic> generateRoute(RouteSettings settings) {
       return MaterialPageRoute(
         builder: (context) =>  BookReview(),
       );
+      case PaymentPageScreenRoute:
+      return MaterialPageRoute(
+        builder: (context) => PaymentPage(),
+      );
     case entryPointScreenRoute:
       return MaterialPageRoute(
         builder: (context) => const EntryPoint(),
