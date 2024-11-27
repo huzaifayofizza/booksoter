@@ -19,7 +19,7 @@ class ProductModel {
   // Factory method to create a ProductModel from Firestore data
   factory ProductModel.fromFirestore(Map<String, dynamic> data, String id) {
     return ProductModel(
-      id: id,  // Use the passed doc ID as the product ID
+      id: id, // Use the passed doc ID as the product ID
       author: data['author'] ?? '',
       description: data['description'] ?? '',
       imageUrl: data['imageUrl'] ?? '',
@@ -45,7 +45,8 @@ Future<List<ProductModel>> fetchProducts() async {
 
     // Map Firestore documents to ProductModel
     products = querySnapshot.docs.map((doc) {
-      return ProductModel.fromFirestore(doc.data() as Map<String, dynamic>, doc.id);  // Pass doc.id as the product ID
+      return ProductModel.fromFirestore(doc.data() as Map<String, dynamic>,
+          doc.id); // Pass doc.id as the product ID
     }).toList();
   } catch (e) {
     print("Error fetching products: $e");
@@ -65,13 +66,16 @@ Future<List<ProductModel>> fetchBestSellers() async {
 
     // Query for products with sales count >= 100
     QuerySnapshot querySnapshot = await collection
-        .where("salesCount", isGreaterThan: 1) // Fetch products with salesCount > 1
-        .orderBy("salesCount", descending: true) // Order by salesCount in descending order
+        .where("salesCount",
+            isGreaterThan: 1) // Fetch products with salesCount > 1
+        .orderBy("salesCount",
+            descending: true) // Order by salesCount in descending order
         .get();
 
     // Map Firestore documents to ProductModel
     bestSellers = querySnapshot.docs.map((doc) {
-      return ProductModel.fromFirestore(doc.data() as Map<String, dynamic>, doc.id);  // Pass doc.id as the product ID
+      return ProductModel.fromFirestore(doc.data() as Map<String, dynamic>,
+          doc.id); // Pass doc.id as the product ID
     }).toList();
   } catch (e) {
     print("Error fetching best sellers: $e");
@@ -91,12 +95,14 @@ Future<List<ProductModel>> fetchNewArrivals() async {
 
     // Query for products ordered by the 'createdAt' timestamp (descending)
     QuerySnapshot querySnapshot = await collection
-        .orderBy('createdAt', descending: true) // Get most recent products first
+        .orderBy('createdAt',
+            descending: true) // Get most recent products first
         .get();
 
     // Map Firestore documents to ProductModel
     newArrival = querySnapshot.docs.map((doc) {
-      return ProductModel.fromFirestore(doc.data() as Map<String, dynamic>, doc.id);  // Pass doc.id as the product ID
+      return ProductModel.fromFirestore(doc.data() as Map<String, dynamic>,
+          doc.id); // Pass doc.id as the product ID
     }).toList();
   } catch (e) {
     print("Error fetching new arrivals: $e");
@@ -104,6 +110,7 @@ Future<List<ProductModel>> fetchNewArrivals() async {
 
   return newArrival;
 }
+
 // Function to fetch bookmarked products based on user wishlist
 Future<List<ProductModel>> fetchBookmarkedProducts() async {
   List<ProductModel> bookmarkedProducts = [];
@@ -130,9 +137,8 @@ Future<List<ProductModel>> fetchBookmarkedProducts() async {
     }
 
     // Get product IDs from the wishlist
-    List<String> productIds = wishlistSnapshot.docs
-        .map((doc) => doc['productId'] as String)
-        .toList();
+    List<String> productIds =
+        wishlistSnapshot.docs.map((doc) => doc['productId'] as String).toList();
 
     // Fetch products from the 'products' collection using the IDs
     final productsCollection =
@@ -151,4 +157,29 @@ Future<List<ProductModel>> fetchBookmarkedProducts() async {
   }
 
   return bookmarkedProducts;
+}
+
+// Function to fetch new arrivals based on creation timestamp
+Future<List<ProductModel>> fetchBookCategory() async {
+  // ignore: non_constant_identifier_names
+  List<ProductModel> BookCategory = [];
+
+  try {
+    // Replace 'products' with the name of your Firestore collection
+    CollectionReference collection =
+        FirebaseFirestore.instance.collection('products');
+
+    // Query for products ordered by the 'createdAt' timestamp (descending)
+    QuerySnapshot querySnapshot = await collection.get();
+
+    // Map Firestore documents to ProductModel
+    BookCategory = querySnapshot.docs.map((doc) {
+      return ProductModel.fromFirestore(doc.data() as Map<String, dynamic>,
+          doc.id); // Pass doc.id as the product ID
+    }).toList();
+  } catch (e) {
+    print("Error fetching Book Category: $e");
+  }
+
+  return BookCategory;
 }
