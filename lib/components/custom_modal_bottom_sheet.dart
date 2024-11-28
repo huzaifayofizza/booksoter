@@ -1,3 +1,4 @@
+import 'package:bookstore/screens/product/views/added_to_cart_message_screen.dart';
 import 'package:flutter/material.dart';
 
 import '../constants.dart';
@@ -6,7 +7,7 @@ Future<dynamic> customModalBottomSheet(
   BuildContext context, {
   bool isDismissible = true,
   double? height,
-  required Widget child,
+  required AddedToCartMessageScreen child, // Correctly declared child parameter
 }) {
   return showModalBottomSheet(
     context: context,
@@ -23,7 +24,7 @@ Future<dynamic> customModalBottomSheet(
     ),
     builder: (context) => SizedBox(
       height: height ?? MediaQuery.of(context).size.height * 0.75,
-      child: child,
+      child: child, // Place the child here
     ),
   );
 }

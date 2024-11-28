@@ -21,16 +21,16 @@ Route<dynamic> generateRoute(RouteSettings settings) {
       return MaterialPageRoute(
         builder: (context) => PasswordRecoveryScreen(),
       );
-   case productDetailsScreenRoute:
-  return MaterialPageRoute(
-    builder: (context) {
-      // Retrieve the product data passed as arguments
-      final ProductModel product = settings.arguments as ProductModel;
+    case productDetailsScreenRoute:
+      return MaterialPageRoute(
+        builder: (context) {
+          // Retrieve the product data passed as arguments
+          final ProductModel product = settings.arguments as ProductModel;
 
-      // Pass the product data to the ProductDetailsScreen
-      return ProductDetailsScreen(product: product);
-    },
-  );
+          // Pass the product data to the ProductDetailsScreen
+          return ProductDetailsScreen(product: product);
+        },
+      );
     case homeScreenRoute:
       return MaterialPageRoute(
         builder: (context) => const HomeScreen(),
@@ -41,7 +41,7 @@ Route<dynamic> generateRoute(RouteSettings settings) {
       );
     case commitPageScreenRoute:
       return MaterialPageRoute(
-        builder: (context) =>  BookReview(),
+        builder: (context) => BookReview(),
       );
     case entryPointScreenRoute:
       return MaterialPageRoute(
@@ -56,13 +56,25 @@ Route<dynamic> generateRoute(RouteSettings settings) {
         builder: (context) => const PreferencesScreen(),
       );
     case OrderConfimScreenRoute:
+      final args = settings.arguments
+          as Map<String, dynamic>; // Get the passed arguments
+      final product = args['product'] as ProductModel; // Extract product
+      final formData =
+          args['formData'] as Map<String, String>; // Extract form data
+
       return MaterialPageRoute(
-        builder: (context) => CartSummaryPage(),
+        builder: (context) => CartSummaryPage(
+          product: product, // Pass the product to the next screen
+          formData: formData, // Pass the form data to the next screen
+        ),
       );
+
     case CheckoutScreenRoute:
+      final ProductModel product = settings.arguments as ProductModel;
       return MaterialPageRoute(
-        builder: (context) => CheckoutPage(),
+        builder: (context) => CheckoutPage(product: product),
       );
+
     case orderPlacedScreenRoute:
       return MaterialPageRoute(
         builder: (context) => OrderConfirmationPage(),
@@ -91,5 +103,26 @@ Route<dynamic> generateRoute(RouteSettings settings) {
       return MaterialPageRoute(
         builder: (context) => const OnBordingScreen(),
       );
+  }
+}
+
+class ErrorPage extends StatelessWidget {
+  final String message;
+
+  const ErrorPage({super.key, required this.message});
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text('Error'),
+      ),
+      body: Center(
+        child: Text(
+          message,
+          style: const TextStyle(fontSize: 18, color: Colors.red),
+        ),
+      ),
+    );
   }
 }

@@ -1,17 +1,96 @@
 import 'package:bookstore/constants.dart';
+import 'package:bookstore/models/product_model.dart';
 import 'package:bookstore/route/route_constants.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
 class CartSummaryPage extends StatefulWidget {
-  const CartSummaryPage({super.key});
+  final ProductModel product;
+  final Map<String, String> formData;
+
+  const CartSummaryPage({
+    super.key,
+    required this.product,
+    required this.formData,
+  });
 
   @override
   _CartSummaryPageState createState() => _CartSummaryPageState();
 }
 
 class _CartSummaryPageState extends State<CartSummaryPage> {
-  final _formKey = GlobalKey<FormState>();
-  final _promoCodeController = TextEditingController();
+  bool _isLoading = false; // Variable to track loading state
+
+  Future<void> _submitOrder() async {
+    setState(() {
+      _isLoading = true; // Show the loader when order submission starts
+    });
+
+    try {
+      // Get the current user's ID
+      User? user = FirebaseAuth.instance.currentUser;
+      if (user == null) {
+        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+          content: Text("User not logged in!"),
+        ));
+        setState(() {
+          _isLoading = false; // Hide the loader
+        });
+        return;
+      }
+      String userId = user.uid;
+
+      // Prepare the order data
+      Map<String, dynamic> orderData = {
+        'productId': widget.product.id,
+        'email': widget.formData['email'],
+        'firstName': widget.formData['firstName'],
+        'lastName': widget.formData['lastName'],
+        'address': widget.formData['address'],
+        'city': widget.formData['city'],
+        'state': widget.formData['state'],
+        'zipCode': widget.formData['zipCode'],
+        'cardNumber': widget.formData['cardNumber'],
+        'expiryDate': widget.formData['expiryDate'],
+        'cvv': widget.formData['cvv'],
+        'orderDate': Timestamp.now(),
+      };
+
+      // Save the order to Firestore
+      await FirebaseFirestore.instance
+          .collection('users')
+          .doc(userId)
+          .collection('orders')
+          .add(orderData);
+
+      // Increment the salesCount for the product
+      await FirebaseFirestore.instance
+          .collection('products')
+          .doc(
+              widget.product.id) // Assuming 'id' is the product ID in Firestore
+          .update({
+        'salesCount': FieldValue.increment(1), // Increment salesCount by 1
+      });
+
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+        content: Text("Order placed successfully!"),
+      ));
+      Navigator.pushReplacementNamed(context, orderPlacedScreenRoute);
+    } catch (e) {
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+        content: Text("Failed to place order: $e"),
+      ));
+    } finally {
+      // Hide the loader after the order process is complete
+      setState(() {
+        _isLoading = false;
+      });
+
+      // Optionally, clear form data here (e.g., reset form fields)
+      widget.formData.clear(); // This clears the form data map
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -21,52 +100,85 @@ class _CartSummaryPageState extends State<CartSummaryPage> {
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
-        child: Form(
-          key: _formKey,
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            if (_isLoading)
+              Center(
+                  child:
+                      CircularProgressIndicator()), // Show loader while processing
+            if (!_isLoading) ...[
               // Cart Items
-              const Card(
+              Card(
                 child: Padding(
-                  padding: EdgeInsets.all(16.0),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
+                  padding: const EdgeInsets.all(16.0),
+                  child: Row(
                     children: [
-                      Text('1 Bike+ Basics Package', style: TextStyle(fontWeight: FontWeight.bold)),
-                      Text('\$2,495.00'),
-                      SizedBox(height: 8),
-                      Text('12-Month Bike+ Limited Warranty'),
-                      Text('1 Peloton Membership'),
-                      Text('\$39/mo membership to unlimited Peloton content. Charges begin upon Peloton activation.'),
+                      Expanded(
+                        flex: 3,
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              "Title: ${widget.product.name}",
+                              style:
+                                  const TextStyle(fontWeight: FontWeight.bold),
+                            ),
+                            Text(
+                              "Genre: ${widget.product.genre}",
+                              style:
+                                  const TextStyle(fontWeight: FontWeight.bold),
+                            ),
+                            Text(
+                              "Author: ${widget.product.author}",
+                              style:
+                                  const TextStyle(fontWeight: FontWeight.bold),
+                            ),
+                          ],
+                        ),
+                      ),
+                      Expanded(
+                        flex: 2,
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.end,
+                          children: [
+                            Image.network(
+                              widget.product.imageUrl,
+                              fit: BoxFit.cover,
+                              height: 100,
+                              width: 65,
+                            ),
+                          ],
+                        ),
+                      ),
                     ],
                   ),
                 ),
               ),
-               const SizedBox(height: defaultPadding),
+              const SizedBox(height: defaultPadding),
 
               // Subtotal and Taxes
-              const Card(
+              Card(
                 child: Padding(
-                  padding: EdgeInsets.all(16.0),
+                  padding: const EdgeInsets.all(16.0),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
-                          Text('Subtotal (2):'),
-                          Text('\$2,495.00'),
+                          const Text('Subtotal (1):'),
+                          Text("\$${widget.product.price}"),
                         ],
                       ),
-                      Row(
+                      const Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           Text('Est. delivery and setup:'),
                           Text('Included'),
                         ],
                       ),
-                      Row(
+                      const Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           Text('Estimated Tax:'),
@@ -77,12 +189,12 @@ class _CartSummaryPageState extends State<CartSummaryPage> {
                   ),
                 ),
               ),
-               const SizedBox(height: defaultPadding),
+              const SizedBox(height: defaultPadding),
 
               // Estimated Total
-              const Card(
+              Card(
                 child: Padding(
-                  padding: EdgeInsets.all(16.0),
+                  padding: const EdgeInsets.all(16.0),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
@@ -90,64 +202,67 @@ class _CartSummaryPageState extends State<CartSummaryPage> {
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           Text('Estimated Total:'),
-                          Text('\$2,495.00'),
+                          Text("\$${widget.product.price + 10}"),
                         ],
                       ),
-                      Text('As low as \$59/month* for 43 months at 0% APR.'),
                     ],
                   ),
                 ),
               ),
-               const SizedBox(height: defaultPadding),
+              const SizedBox(height: defaultPadding),
 
-              // 100-Day Home Trial
-              const Card(
+              // 100-Day Home Trial Details
+              Card(
                 child: Padding(
                   padding: EdgeInsets.all(16.0),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Text('1 DAY HOME TRIAL'),
+                      Text('Details'),
                       SizedBox(height: 8),
                       Row(
                         children: [
                           Icon(Icons.check_circle),
                           SizedBox(width: 8),
-                          Text('Try Peloton at home for 15 days.'),
+                          Text('First Name: ${widget.formData['firstName']}'),
                         ],
                       ),
                       Row(
                         children: [
                           Icon(Icons.check_circle),
                           SizedBox(width: 8),
-                          Text('Explore thousands of classes, live and on-demand.'),
+                          Text('Email: ${widget.formData['email']}'),
                         ],
                       ),
                       Row(
                         children: [
                           Icon(Icons.check_circle),
                           SizedBox(width: 8),
-                          Text('Not for you? We\'ll refund your entire order.'),
+                          Text('Address: ${widget.formData['address']}'),
                         ],
                       ),
-                      Text('Limited-time offer. Terms apply.'),
+                      Row(
+                        children: [
+                          Icon(Icons.check_circle),
+                          SizedBox(width: 8),
+                          Text('Card Number: ${widget.formData['cardNumber']}'),
+                        ],
+                      ),
                     ],
                   ),
                 ),
               ),
-               const SizedBox(height: defaultPadding),
+              const SizedBox(height: defaultPadding),
 
               // Checkout Button
               ElevatedButton(
-                onPressed: () {
-                  if (_formKey.currentState!.validate()) {
-                  Navigator.pushNamed(context, orderPlacedScreenRoute);
-                  }
-                },
-                child: const Text('Your Order Is Done Now?'),
+                onPressed: _isLoading
+                    ? null
+                    : _submitOrder, // Disable button while loading
+                child: const Text('Submit Order'),
               ),
             ],
-          ),
+          ],
         ),
       ),
     );

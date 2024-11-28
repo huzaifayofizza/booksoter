@@ -1,8 +1,15 @@
+import 'package:bookstore/models/product_model.dart';
+import 'package:bookstore/route/route_constants.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import '../../route/route_constants.dart';
+import 'package:google_sign_in/google_sign_in.dart';
 
 class CheckoutPage extends StatefulWidget {
-  const CheckoutPage({super.key});
+  final ProductModel product;
+
+  // Constructor to accept product data
+  const CheckoutPage({super.key, required this.product});
 
   @override
   _CheckoutPageState createState() => _CheckoutPageState();
@@ -20,11 +27,61 @@ class _CheckoutPageState extends State<CheckoutPage> {
   final _cardNumberController = TextEditingController();
   final _expiryDateController = TextEditingController();
   final _cvvController = TextEditingController();
-  bool _is12MonthWarranty = false;
-  bool _is27MonthWarranty = false;
 
   // Animation states
   bool _showPaymentFields = false;
+
+  @override
+  void initState() {
+    super.initState();
+    _fetchUserData();
+  }
+
+  Future<void> _fetchUserData() async {
+    try {
+      final user = FirebaseAuth.instance.currentUser;
+      final googleSignIn = GoogleSignIn();
+      final googleUser = await googleSignIn.signInSilently();
+
+      if (user != null) {
+        if (googleUser != null) {
+          // Google user
+          setState(() {
+            _firstNameController.text =
+                googleUser.displayName?.split(' ').first ?? '';
+            _lastNameController.text =
+                googleUser.displayName?.split(' ').last ?? '';
+            _emailController.text = googleUser.email;
+          });
+        } else if (user.isAnonymous) {
+          // Anonymous user
+          setState(() {
+            _firstNameController.text = 'Guest';
+            _emailController.text = 'guest@example.com';
+          });
+        } else {
+          // Firebase Auth user
+          final userDoc = await FirebaseFirestore.instance
+              .collection('users')
+              .doc(user.uid)
+              .get();
+
+          if (userDoc.exists) {
+            final data = userDoc.data();
+            setState(() {
+              _firstNameController.text =
+                  (data?['fullname'] ?? 'User').split(' ').first;
+              _lastNameController.text =
+                  (data?['fullname'] ?? 'User').split(' ').last;
+              _emailController.text = data?['email'] ?? 'No Email';
+            });
+          }
+        }
+      }
+    } catch (e) {
+      debugPrint("Error fetching user data: $e");
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -43,11 +100,20 @@ class _CheckoutPageState extends State<CheckoutPage> {
               TextFormField(
                 controller: _emailController,
                 decoration: const InputDecoration(labelText: 'Email Address*'),
+                onChanged: (value) {
+                  _emailController.text = value.trim().toLowerCase();
+                  _emailController.selection = TextSelection.fromPosition(
+                    TextPosition(offset: _emailController.text.length),
+                  );
+                },
                 validator: (value) {
+                  value = value?.trim();
                   if (value == null || value.isEmpty) {
                     return 'Please enter your email address';
                   }
-                  if (!RegExp(r'^[^@]+@[^@]+\.[^@]+').hasMatch(value)) {
+                  if (!RegExp(
+                          r'^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$')
+                      .hasMatch(value)) {
                     return 'Please enter a valid email address';
                   }
                   return null;
@@ -63,9 +129,27 @@ class _CheckoutPageState extends State<CheckoutPage> {
                       controller: _firstNameController,
                       decoration:
                           const InputDecoration(labelText: 'First Name*'),
+                      onChanged: (value) {
+                        _firstNameController.text = value.trim().replaceFirst(
+                              value[0],
+                              value[0].toUpperCase(),
+                            );
+                        _firstNameController.selection =
+                            TextSelection.fromPosition(
+                          TextPosition(
+                              offset: _firstNameController.text.length),
+                        );
+                      },
                       validator: (value) {
+                        value = value?.trim();
                         if (value == null || value.isEmpty) {
                           return 'Please enter your first name';
+                        }
+                        if (value.length < 3) {
+                          return 'Name must be at least 3 characters long';
+                        }
+                        if (!RegExp(r'^[a-zA-Z]+$').hasMatch(value)) {
+                          return 'Name can only contain alphabets';
                         }
                         return null;
                       },
@@ -77,9 +161,26 @@ class _CheckoutPageState extends State<CheckoutPage> {
                       controller: _lastNameController,
                       decoration:
                           const InputDecoration(labelText: 'Last Name*'),
+                      onChanged: (value) {
+                        _lastNameController.text = value.trim().replaceFirst(
+                              value[0],
+                              value[0].toUpperCase(),
+                            );
+                        _lastNameController.selection =
+                            TextSelection.fromPosition(
+                          TextPosition(offset: _lastNameController.text.length),
+                        );
+                      },
                       validator: (value) {
+                        value = value?.trim();
                         if (value == null || value.isEmpty) {
                           return 'Please enter your last name';
+                        }
+                        if (value.length < 3) {
+                          return 'Name must be at least 3 characters long';
+                        }
+                        if (!RegExp(r'^[a-zA-Z]+$').hasMatch(value)) {
+                          return 'Name can only contain alphabets';
                         }
                         return null;
                       },
@@ -148,29 +249,6 @@ class _CheckoutPageState extends State<CheckoutPage> {
               ),
               const SizedBox(height: 16),
 
-              // Warranty Options
-              CheckboxListTile(
-                title: const Text(
-                    'Add 12 additional months for 175 per Peloton Bike'),
-                value: _is12MonthWarranty,
-                onChanged: (value) {
-                  setState(() {
-                    _is12MonthWarranty = value!;
-                  });
-                },
-              ),
-              CheckboxListTile(
-                title: const Text(
-                    'Add 27 additional months for 230 per Peloton Bike+'),
-                value: _is27MonthWarranty,
-                onChanged: (value) {
-                  setState(() {
-                    _is27MonthWarranty = value!;
-                  });
-                },
-              ),
-              const SizedBox(height: 16),
-
               // Payment Section
               GestureDetector(
                 onTap: () {
@@ -235,7 +313,7 @@ class _CheckoutPageState extends State<CheckoutPage> {
                                 }
                                 if (!RegExp(r'^(0[1-9]|1[0-2])\/\d{2}$')
                                     .hasMatch(value)) {
-                                  return 'Please enter a valid expiry date';
+                                  return 'Please enter a valid date (MM/YY)';
                                 }
                                 return null;
                               },
@@ -265,17 +343,40 @@ class _CheckoutPageState extends State<CheckoutPage> {
                   ),
                 ),
               ),
-              const SizedBox(height: 16),
+              const SizedBox(height: 24),
 
               // Submit Button
-              Center(
+              SizedBox(
+                width: double.infinity,
                 child: ElevatedButton(
+                  // CheckoutPage: Submit the form and pass product and form data to CartSummaryPage
                   onPressed: () {
-                    if (_formKey.currentState!.validate()) {
-                      Navigator.pushNamed(context, OrderConfimScreenRoute);
+                    if (_formKey.currentState?.validate() ?? false) {
+                      // Navigate to CartSummaryPage with product data and form data
+                      Navigator.pushNamed(
+                        context,
+                        OrderConfimScreenRoute, // Ensure this is properly defined in your route settings
+                        arguments: {
+                          'product': widget
+                              .product, // product object from CheckoutPage
+                          'formData': {
+                            'email': _emailController.text,
+                            'firstName': _firstNameController.text,
+                            'lastName': _lastNameController.text,
+                            'address': _addressController.text,
+                            'city': _cityController.text,
+                            'state': _stateController.text,
+                            'zipCode': _zipCodeController.text,
+                            'cardNumber': _cardNumberController.text,
+                            'expiryDate': _expiryDateController.text,
+                            'cvv': _cvvController.text,
+                          },
+                        },
+                      );
                     }
                   },
-                  child: const Text('Order Confrim'),
+
+                  child: const Text('Check Out Deatils'),
                 ),
               ),
             ],

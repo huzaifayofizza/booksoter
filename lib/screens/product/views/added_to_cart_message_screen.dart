@@ -1,9 +1,14 @@
+import 'package:bookstore/models/product_model.dart';
 import 'package:flutter/material.dart';
 import 'package:bookstore/constants.dart';
 import 'package:bookstore/route/screen_export.dart';
 
 class AddedToCartMessageScreen extends StatelessWidget {
-  const AddedToCartMessageScreen({super.key});
+  final ProductModel product;
+
+  // Constructor to receive product data
+  const AddedToCartMessageScreen({Key? key, required this.product})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -43,7 +48,10 @@ class AddedToCartMessageScreen extends StatelessWidget {
               const SizedBox(height: defaultPadding),
               ElevatedButton(
                 onPressed: () {
-                  Navigator.pushNamed(context, CheckoutScreenRoute);
+                  Navigator.pushNamed(context, CheckoutScreenRoute,
+                      arguments:
+                          product // Pass the product to the CheckoutScreen
+                      );
                 },
                 child: const Text("Checkout"),
               ),
