@@ -43,6 +43,7 @@ class _CartSummaryPageState extends State<CartSummaryPage> {
 
       // Prepare the order data
       Map<String, dynamic> orderData = {
+        'uid': userId,
         'productId': widget.product.id,
         'email': widget.formData['email'],
         'firstName': widget.formData['firstName'],
@@ -58,11 +59,7 @@ class _CartSummaryPageState extends State<CartSummaryPage> {
       };
 
       // Save the order to Firestore
-      await FirebaseFirestore.instance
-          .collection('users')
-          .doc(userId)
-          .collection('orders')
-          .add(orderData);
+      FirebaseFirestore.instance.collection('orderData').add(orderData);
 
       // Increment the salesCount for the product
       await FirebaseFirestore.instance
