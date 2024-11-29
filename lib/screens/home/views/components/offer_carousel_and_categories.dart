@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../../../../constants.dart';
-import 'categories.dart';
+
 import 'offers_carousel.dart';
 
 class OffersCarouselAndCategories extends StatelessWidget {
@@ -27,7 +27,7 @@ class OffersCarouselAndCategories extends StatelessWidget {
         ),
         // While loading use 👇
         // const CategoriesSkelton(),
-        const Categories(),
+
       ],
     );
   }

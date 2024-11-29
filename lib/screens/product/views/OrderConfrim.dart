@@ -76,7 +76,7 @@ class _CartSummaryPageState extends State<CartSummaryPage> {
       ScaffoldMessenger.of(context).showSnackBar(SnackBar(
         content: Text("Order placed successfully!"),
       ));
-      Navigator.pushReplacementNamed(context, orderPlacedScreenRoute);
+      Navigator.pushReplacementNamed(context, orderPlacedScreenRoute , arguments: widget.product);
     } catch (e) {
       ScaffoldMessenger.of(context).showSnackBar(SnackBar(
         content: Text("Failed to place order: $e"),
@@ -145,8 +145,8 @@ class _CartSummaryPageState extends State<CartSummaryPage> {
                             Image.network(
                               widget.product.imageUrl,
                               fit: BoxFit.cover,
-                              height: 100,
-                              width: 65,
+                              height: 120,
+                              width: 80,
                             ),
                           ],
                         ),
@@ -169,13 +169,6 @@ class _CartSummaryPageState extends State<CartSummaryPage> {
                         children: [
                           const Text('Subtotal (1):'),
                           Text("\$${widget.product.price}"),
-                        ],
-                      ),
-                      const Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Text('Est. delivery and setup:'),
-                          Text('Included'),
                         ],
                       ),
                       const Row(

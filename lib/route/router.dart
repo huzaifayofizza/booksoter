@@ -77,7 +77,7 @@ Route<dynamic> generateRoute(RouteSettings settings) {
 
     case orderPlacedScreenRoute:
       return MaterialPageRoute(
-        builder: (context) => OrderConfirmationPage(),
+        builder: (context) =>  OrderConfirmationPage(),
       );
     case BookcategoryScreenRoute:
       return MaterialPageRoute(
