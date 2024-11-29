@@ -76,8 +76,9 @@ Route<dynamic> generateRoute(RouteSettings settings) {
       );
 
     case orderPlacedScreenRoute:
+      final ProductModel product = settings.arguments as ProductModel;
       return MaterialPageRoute(
-        builder: (context) =>  OrderConfirmationPage(),
+        builder: (context) => OrderConfirmationPage(product: product),
       );
     case BookcategoryScreenRoute:
       return MaterialPageRoute(
