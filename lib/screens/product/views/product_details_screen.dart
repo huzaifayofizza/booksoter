@@ -160,7 +160,7 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
               title: "Reviews",
               isShowBottomBorder: true,
               press: () {
-                Navigator.pushNamed(context, commitPageScreenRoute);
+                Navigator.pushNamed(context, commitPageScreenRoute,arguments: widget.product);
               },
             ),
             const SliverToBoxAdapter(

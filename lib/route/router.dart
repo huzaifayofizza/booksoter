@@ -39,9 +39,10 @@ Route<dynamic> generateRoute(RouteSettings settings) {
       return MaterialPageRoute(
         builder: (context) => const BookmarkScreen(),
       );
-    case commitPageScreenRoute:
+  case commitPageScreenRoute:
+      final ProductModel product = settings.arguments as ProductModel;
       return MaterialPageRoute(
-        builder: (context) => BookReview(),
+        builder: (context) => BookReview(product: product),
       );
     case entryPointScreenRoute:
       return MaterialPageRoute(
