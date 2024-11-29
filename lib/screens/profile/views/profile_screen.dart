@@ -100,6 +100,13 @@ class _ProfileScreenState extends State<ProfileScreen> {
               Navigator.pushNamed(context, preferencesScreenRoute);
             },
           ),
+          ProfileMenuListTile(
+            text: "Order Details",
+            svgSrc: "assets/icons/Order.svg",
+            press: () {
+              Navigator.pushNamed(context, ordersScreenRoute);
+            },
+          ),
           const SizedBox(height: defaultPadding),
           Padding(
             padding: const EdgeInsets.symmetric(

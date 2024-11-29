@@ -11,6 +11,7 @@ export '/screens/product/views/product_details_screen.dart';
 export '/screens/product/views/OrderConfrim.dart';
 export '/screens/product/views/orderPlaced.dart';
 export '/screens/product/views/commitPage.dart';
+export '/screens/Orders/OrderDetailPage.dart';
 
 export '/screens/checkout/checkout.dart';
 export '/screens/preferences/views/preferences_screen.dart';
