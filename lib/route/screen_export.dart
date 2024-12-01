@@ -20,4 +20,3 @@ export '/screens/profile/views/profile_screen.dart';
 export '/screens/admin_panel/Screen/BookInsertForm.dart';
 export '/screens/admin_panel/Screen/BookView.dart';
 export '/screens/admin_panel/Screen/adminUserAccount.dart';
-export '/screens/admin_panel/Screen/AdminOrderManage.dart';

@@ -36,6 +36,8 @@ class Order {
     required this.cvv,
     required this.orderDate,
   });
+
+  get orderId => null;
 }
 
 class AdminOrderManage extends StatefulWidget {
