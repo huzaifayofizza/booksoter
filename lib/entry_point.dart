@@ -17,7 +17,7 @@ class _EntryPointState extends State<EntryPoint> {
     const HomeScreen(),
     const BookCategory(),
     const BookmarkScreen(),
-    ProfileScreen(),
+    const ProfileScreen(),
   ];
   int _currentIndex = 0;
 

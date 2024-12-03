@@ -70,11 +70,11 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
         await querySnapshot.docs.first.reference.delete();
     
           ScaffoldMessenger.of(context).showSnackBar(
-  SnackBar(
+  const SnackBar(
     content: Text("Product removed from wishlist."),
     duration: Duration(seconds: 2), // Customize the duration if needed
   ),
-);;
+);
       }
     } else {
       // Add the product to the wishlist
@@ -82,7 +82,7 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
         'productId': widget.product.id, // Store only productId
       });
   ScaffoldMessenger.of(context).showSnackBar(
-  SnackBar(
+  const SnackBar(
     content: Text("Product added to wishlist."),
     duration: Duration(seconds: 2), // Customize the duration if needed
   ),

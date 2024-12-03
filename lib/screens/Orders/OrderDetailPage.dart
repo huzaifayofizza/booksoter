@@ -164,7 +164,7 @@ class OrderDetailsPageState extends State<OrderDetailsPage> {
             width: 60.0,
             height: 120.0,
             fit: BoxFit.cover,
-            errorBuilder: (context, error, stackTrace) => Center(
+            errorBuilder: (context, error, stackTrace) => const Center(
               child: Icon(Icons.error),
             ),
           ),
@@ -175,14 +175,14 @@ class OrderDetailsPageState extends State<OrderDetailsPage> {
           children: [
             Text(
               'Price: \$${order.price}',
-              style: TextStyle(fontSize: 12.0),
+              style: const TextStyle(fontSize: 12.0),
             ),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Text(
                   order.orderDate.toString(),
-                  style: TextStyle(fontSize: 12.0),
+                  style: const TextStyle(fontSize: 12.0),
                 ),
                 GestureDetector(
                   child: Text(

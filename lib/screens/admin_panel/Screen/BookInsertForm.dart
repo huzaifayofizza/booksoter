@@ -149,7 +149,7 @@ class _BookStoreAdminState extends State<BookStoreAdmin> {
       appBar: AppBar(
         title: const Text('Book Store Admin'),
       ),
-      drawer: DrawerWidget(),
+      drawer: const DrawerWidget(),
       body: SingleChildScrollView(
         padding: const EdgeInsets.all(20.0),
         child: Column(

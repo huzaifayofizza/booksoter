@@ -7,8 +7,7 @@ class AddedToCartMessageScreen extends StatelessWidget {
   final ProductModel product;
 
   // Constructor to receive product data
-  const AddedToCartMessageScreen({Key? key, required this.product})
-      : super(key: key);
+  const AddedToCartMessageScreen({super.key, required this.product});
 
   @override
   Widget build(BuildContext context) {

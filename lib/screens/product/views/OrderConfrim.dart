@@ -31,7 +31,7 @@ class _CartSummaryPageState extends State<CartSummaryPage> {
       // Get the current user's ID
       User? user = FirebaseAuth.instance.currentUser;
       if (user == null) {
-        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+        ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
           content: Text("User not logged in!"),
         ));
         setState(() {
@@ -70,7 +70,7 @@ class _CartSummaryPageState extends State<CartSummaryPage> {
         'salesCount': FieldValue.increment(1), // Increment salesCount by 1
       });
 
-      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
         content: Text("Order placed successfully!"),
       ));
       dynamic product = widget.product;
@@ -103,7 +103,7 @@ class _CartSummaryPageState extends State<CartSummaryPage> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             if (_isLoading)
-              Center(
+              const Center(
                   child:
                       CircularProgressIndicator()), // Show loader while processing
             if (!_isLoading) ...[
@@ -193,7 +193,7 @@ class _CartSummaryPageState extends State<CartSummaryPage> {
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
-                          Text('Estimated Total:'),
+                          const Text('Estimated Total:'),
                           Text("\$${widget.product.price + 10}"),
                         ],
                       ),
@@ -206,37 +206,37 @@ class _CartSummaryPageState extends State<CartSummaryPage> {
               // 100-Day Home Trial Details
               Card(
                 child: Padding(
-                  padding: EdgeInsets.all(16.0),
+                  padding: const EdgeInsets.all(16.0),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Text('Details'),
-                      SizedBox(height: 8),
+                      const Text('Details'),
+                      const SizedBox(height: 8),
                       Row(
                         children: [
-                          Icon(Icons.check_circle),
-                          SizedBox(width: 8),
+                          const Icon(Icons.check_circle),
+                          const SizedBox(width: 8),
                           Text('First Name: ${widget.formData['firstName']}'),
                         ],
                       ),
                       Row(
                         children: [
-                          Icon(Icons.check_circle),
-                          SizedBox(width: 8),
+                          const Icon(Icons.check_circle),
+                          const SizedBox(width: 8),
                           Text('Email: ${widget.formData['email']}'),
                         ],
                       ),
                       Row(
                         children: [
-                          Icon(Icons.check_circle),
-                          SizedBox(width: 8),
+                          const Icon(Icons.check_circle),
+                          const SizedBox(width: 8),
                           Text('Address: ${widget.formData['address']}'),
                         ],
                       ),
                       Row(
                         children: [
-                          Icon(Icons.check_circle),
-                          SizedBox(width: 8),
+                          const Icon(Icons.check_circle),
+                          const SizedBox(width: 8),
                           Text('Card Number: ${widget.formData['cardNumber']}'),
                         ],
                       ),

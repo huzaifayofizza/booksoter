@@ -89,7 +89,7 @@ class _BookStoreViewState extends State<BookStoreView> {
       appBar: AppBar(
         title: const Text('Book Store'),
       ),
-      drawer: DrawerWidget(),
+      drawer: const DrawerWidget(),
       body: isLoading
           ? const Center(child: CircularProgressIndicator())
           : ListView.builder(

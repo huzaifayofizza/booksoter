@@ -6,7 +6,7 @@ import 'package:flutter/material.dart';
 class BookReview extends StatefulWidget {
   final ProductModel product;
 
-  const BookReview({Key? key, required this.product}) : super(key: key);
+  const BookReview({super.key, required this.product});
 
   @override
   _BookReviewState createState() => _BookReviewState();
@@ -102,7 +102,7 @@ class _BookReviewState extends State<BookReview> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("Book Reviews"),
+        title: const Text("Book Reviews"),
       ),
       body: Column(
         children: [

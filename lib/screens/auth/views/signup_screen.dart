@@ -43,7 +43,7 @@ Future<void> _checkLoginStatus() async {
               context,
               MaterialPageRoute(
                   builder: (context) =>
-                      AdminOrderManage()), // Navigate to Admin Panel
+                      const AdminOrderManage()), // Navigate to Admin Panel
             );// Navigate to Admin Panel
     } else {
       Navigator.pushReplacementNamed(context, entryPointScreenRoute); // Navigate to User Screen
@@ -78,7 +78,7 @@ Future<void> _register() async {
     Navigator.push(
       context,
       MaterialPageRoute(
-        builder: (_) => LoaderPage(),
+        builder: (_) => const LoaderPage(),
       ),
     );
 

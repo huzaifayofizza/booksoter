@@ -121,7 +121,7 @@ class _AdminOrderManageState extends State<AdminOrderManage> {
       appBar: AppBar(
         title: const Text('Book Store Admin - Orders'),
       ),
-      drawer: DrawerWidget(),
+      drawer: const DrawerWidget(),
       body: isLoading
           ? const Center(child: CircularProgressIndicator())
           : SingleChildScrollView(

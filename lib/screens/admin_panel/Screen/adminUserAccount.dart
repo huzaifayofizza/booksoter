@@ -118,7 +118,7 @@ class _AdminUserAccountState extends State<AdminUserAccount> {
       appBar: AppBar(
         title: const Text('Book Store Admin'),
       ),
-      drawer: DrawerWidget(),
+      drawer: const DrawerWidget(),
       body: SingleChildScrollView(
         child: Center(
           child: Column(

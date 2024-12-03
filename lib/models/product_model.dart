@@ -1,4 +1,4 @@
-import 'package:bookstore/constants.dart';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
@@ -150,7 +150,7 @@ Future<List<ProductModel>> fetchBookmarkedProducts() async {
     // Map Firestore documents to ProductModel
     bookmarkedProducts = querySnapshot.docs.map((doc) {
       return ProductModel.fromFirestore(
-          doc.data() as Map<String, dynamic>, doc.id);
+          doc.data(), doc.id);
     }).toList();
   } catch (e) {
     print("Error fetching bookmarked products: $e");

@@ -4,10 +4,13 @@ import 'package:bookstore/screens/home/views/BookCategory_screen.dart';
 import 'package:bookstore/screens/product/views/orderPlaced.dart';
 import 'package:flutter/material.dart';
 import 'package:bookstore/entry_point.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import 'screen_export.dart';
 
+
 Route<dynamic> generateRoute(RouteSettings settings) {
+
   switch (settings.name) {
     case logInScreenRoute:
       return MaterialPageRoute(
@@ -54,7 +57,7 @@ Route<dynamic> generateRoute(RouteSettings settings) {
       );
     case profileScreenRoute:
       return MaterialPageRoute(
-        builder: (context) => ProfileScreen(),
+        builder: (context) => const ProfileScreen(),
       );
     case preferencesScreenRoute:
       return MaterialPageRoute(
@@ -89,46 +92,16 @@ Route<dynamic> generateRoute(RouteSettings settings) {
       return MaterialPageRoute(
         builder: (context) => const BookCategory(),
       );
-    // case bookInsertFormScreenRoute:
-    //   return MaterialPageRoute(
-    //     builder: (context) => BookStoreAdmin(),
-    //   );
-    // case bookViewScreenRoute:
-    //   return MaterialPageRoute(
-    //     builder: (context) => BookStoreView(),
-    //   );
-    // case AdminUserAccountScreenRoute:
-    //   return MaterialPageRoute(
-    //     builder: (context) => AdminUserAccount(),
-    //   );
-    // case AdminOrderManageSCreenRoute:
-    //   return MaterialPageRoute(
-    //     builder: (context) => AdminUserAccount(),
-    //   );
-    default:
+
+    case onbordingScreenRoute:
+      // Return Onboarding screen only if it's the first time
       return MaterialPageRoute(
         builder: (context) => const OnBordingScreen(),
       );
-  }
-}
-
-class ErrorPage extends StatelessWidget {
-  final String message;
-
-  const ErrorPage({super.key, required this.message});
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text('Error'),
-      ),
-      body: Center(
-        child: Text(
-          message,
-          style: const TextStyle(fontSize: 18, color: Colors.red),
-        ),
-      ),
-    );
+    default:
+      return MaterialPageRoute(
+        builder: (context) =>
+            const LoginScreen(), // Default to Login if not first time
+      );
   }
 }

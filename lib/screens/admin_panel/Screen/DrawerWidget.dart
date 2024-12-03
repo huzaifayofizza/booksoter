@@ -119,7 +119,7 @@ class _DrawerWidgetState extends State<DrawerWidget> {
                   onTap: () {
                     Navigator.push(
                       context,
-                      MaterialPageRoute(builder: (context) => BookStoreView()),
+                      MaterialPageRoute(builder: (context) => const BookStoreView()),
                     );
                   },
                 ),
@@ -128,7 +128,7 @@ class _DrawerWidgetState extends State<DrawerWidget> {
                   onTap: () {
                     Navigator.push(
                       context,
-                      MaterialPageRoute(builder: (context) => BookStoreAdmin()),
+                      MaterialPageRoute(builder: (context) => const BookStoreAdmin()),
                     );
                   },
                 ),
@@ -138,7 +138,7 @@ class _DrawerWidgetState extends State<DrawerWidget> {
                     Navigator.push(
                       context,
                       MaterialPageRoute(
-                          builder: (context) => AdminOrderManage()),
+                          builder: (context) => const AdminOrderManage()),
                     );
                   },
                 ),
@@ -148,7 +148,7 @@ class _DrawerWidgetState extends State<DrawerWidget> {
                     Navigator.push(
                       context,
                       MaterialPageRoute(
-                          builder: (context) => AdminUserAccount()),
+                          builder: (context) => const AdminUserAccount()),
                     );
                   },
                 ),

@@ -5,8 +5,7 @@ import 'package:bookstore/route/route_constants.dart';
 class OrderConfirmationPage extends StatefulWidget {
   final ProductModel product;
 
-  const OrderConfirmationPage({Key? key, required this.product})
-      : super(key: key);
+  const OrderConfirmationPage({super.key, required this.product});
 
   @override
   State<OrderConfirmationPage> createState() => _OrderConfirmationPageState();
