@@ -2,6 +2,7 @@ import 'package:bookstore/constants.dart';
 import 'package:bookstore/route/route_constants.dart';
 import 'package:bookstore/screens/profile/views/components/profile_card.dart';
 import 'package:bookstore/screens/profile/views/components/profile_menu_item_list_tile.dart';
+import 'package:bookstore/screens/profile/views/getHelp.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:google_sign_in/google_sign_in.dart';
@@ -120,7 +121,14 @@ class _ProfileScreenState extends State<ProfileScreen> {
             text: "Get Help",
             svgSrc: "assets/icons/Help.svg",
             press: () {
-              Navigator.pushNamed(context, getHelpScreenRoute);
+              // Use Navigator.push to push the MaterialPageRoute
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) =>
+                      UserChatScreen(), // Navigate to GetHelpScreen
+                ),
+              );
             },
           ),
           ProfileMenuListTile(

@@ -18,139 +18,148 @@ class SignUpScreen extends StatefulWidget {
 }
 
 class _SignUpScreenState extends State<SignUpScreen> {
+  final TextEditingController emailController = TextEditingController();
+  final TextEditingController passwordController = TextEditingController();
+  final TextEditingController fullnameController = TextEditingController();
+  final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
+  bool isLoading = false;
+  bool isChecked = false; // Checkbox state
 
-final TextEditingController emailController = TextEditingController();
-final TextEditingController passwordController = TextEditingController();
-final TextEditingController fullnameController = TextEditingController();
-final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
-bool isLoading = false;
-bool isChecked = false; // Checkbox state
-
-@override
-void initState() {
-  super.initState();
-  _checkLoginStatus();
-}
+  @override
+  void initState() {
+    super.initState();
+    _checkLoginStatus();
+  }
 
 // Check if the user is already logged in
-Future<void> _checkLoginStatus() async {
-  final SharedPreferences prefs = await SharedPreferences.getInstance();
-  final bool isLoggedIn = prefs.getBool('isLoggedIn') ?? false;
-  if (isLoggedIn) {
-    final role = prefs.getString('role') ?? 'user';
-    if (role == 'admin') {
-       Navigator.pushReplacement(
-              context,
-              MaterialPageRoute(
-                  builder: (context) =>
-                      const AdminOrderManage()), // Navigate to Admin Panel
-            );// Navigate to Admin Panel
-    } else {
-      Navigator.pushReplacementNamed(context, entryPointScreenRoute); // Navigate to User Screen
-    }
-  }
-}
-
-// Registration function
-Future<void> _register() async {
-  if (!_formKey.currentState!.validate()) return;
-
-  if (!isChecked) {
-    _showSnackbar("You must agree to the terms of service and privacy policy.");
-    return;
-  }
-
-  setState(() {
-    isLoading = true;
-  });
-
-  try {
-    // Create user
-    UserCredential userCredential = await FirebaseAuth.instance.createUserWithEmailAndPassword(
-      email: emailController.text.trim(),
-      password: passwordController.text.trim(),
-    );
-
-    // Send email verification
-    await userCredential.user!.sendEmailVerification();
-
-    // Show loader while waiting for email verification
-    Navigator.push(
-      context,
-      MaterialPageRoute(
-        builder: (_) => const LoaderPage(),
-      ),
-    );
-
-    // Start verification process
-    _startEmailVerificationTimer(userCredential.user!);
-  } catch (e) {
-    setState(() {
-      isLoading = false;
-    });
-    _showSnackbar("Registration failed: ${e.toString()}");
-  }
-}
-
-// Start email verification timer
-Timer? _verificationTimer;
-void _startEmailVerificationTimer(User user) {
-  _verificationTimer = Timer.periodic(const Duration(seconds: 5), (timer) async {
-    // Refresh user data
-    await user.reload();
-    User? currentUser = FirebaseAuth.instance.currentUser; // Retrieve current user again
-    if (currentUser != null && currentUser.emailVerified) {
-      timer.cancel();
-      _verificationTimer = null;
-
-      // Store user data in Firestore after confirming the email is verified
-      try {
-        await FirebaseFirestore.instance.collection('users').doc(currentUser.uid).set({
-          'email': currentUser.email,
-          'fullname': fullnameController.text.trim(),
-          'role': 'user', // Default role
-          'createdAt': DateTime.now(),
-        });
-
-        // Save login status and role in SharedPreferences
-        final SharedPreferences prefs = await SharedPreferences.getInstance();
-        await prefs.setBool('isLoggedIn', true);
-        await prefs.setString('uid', currentUser.uid);
-        await prefs.setString('role', 'user'); // Default role is user
-
-        // Navigate to entry point screen
-        Navigator.pushReplacementNamed(context, entryPointScreenRoute);
-      } catch (e) {
-        _showSnackbar("Error saving user data. Please try again.");
-        Navigator.of(context).pop();
+  Future<void> _checkLoginStatus() async {
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
+    final bool isLoggedIn = prefs.getBool('isLoggedIn') ?? false;
+    if (isLoggedIn) {
+      final role = prefs.getString('role') ?? 'user';
+      if (role == 'admin') {
+        Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(
+              builder: (context) =>
+                  const AdminOrderManage()), // Navigate to Admin Panel
+        ); // Navigate to Admin Panel
+      } else {
+        Navigator.pushReplacementNamed(
+            context, entryPointScreenRoute); // Navigate to User Screen
       }
     }
-  });
+  }
 
-  // Cancel verification timer after 2 minutes
-  Future.delayed(const Duration(minutes: 2), () {
-    User? currentUser = FirebaseAuth.instance.currentUser;
-    if (currentUser != null && !currentUser.emailVerified) {
-      _verificationTimer?.cancel();
-      _showSnackbar("Email verification failed. Please try again.");
-      Navigator.of(context).pop();
+// Registration function
+  Future<void> _register() async {
+    if (!_formKey.currentState!.validate()) return;
+
+    if (!isChecked) {
+      _showSnackbar(
+          "You must agree to the terms of service and privacy policy.");
+      return;
     }
-  });
-}
+
+    setState(() {
+      isLoading = true;
+    });
+
+    try {
+      // Create user
+      UserCredential userCredential =
+          await FirebaseAuth.instance.createUserWithEmailAndPassword(
+        email: emailController.text.trim(),
+        password: passwordController.text.trim(),
+      );
+
+      // Send email verification
+      await userCredential.user!.sendEmailVerification();
+
+      // Show loader while waiting for email verification
+      Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (_) => const LoaderPage(),
+        ),
+      );
+
+      // Start verification process
+      _startEmailVerificationTimer(userCredential.user!);
+    } catch (e) {
+      setState(() {
+        isLoading = false;
+      });
+      _showSnackbar("Registration failed: ${e.toString()}");
+    }
+  }
+
+// Start email verification timer
+  Timer? _verificationTimer;
+  void _startEmailVerificationTimer(User user) {
+    _verificationTimer =
+        Timer.periodic(const Duration(seconds: 5), (timer) async {
+      // Refresh user data
+      await user.reload();
+      User? currentUser =
+          FirebaseAuth.instance.currentUser; // Retrieve current user again
+      if (currentUser != null && currentUser.emailVerified) {
+        timer.cancel();
+        _verificationTimer = null;
+
+        // Store user data in Firestore after confirming the email is verified
+        try {
+          await FirebaseFirestore.instance
+              .collection('users')
+              .doc(currentUser.uid)
+              .set({
+            'email': currentUser.email,
+            'fullname': fullnameController.text.trim(),
+            'role': 'user', // Default role
+            'createdAt': DateTime.now(),
+            'imageUrl': "",
+          });
+
+          // Save login status and role in SharedPreferences
+          final SharedPreferences prefs = await SharedPreferences.getInstance();
+          await prefs.setBool('isLoggedIn', true);
+          await prefs.setString('uid', currentUser.uid);
+          await prefs.setString('role', 'user'); // Default role is user
+
+          // Navigate to entry point screen
+          Navigator.pushReplacementNamed(context, entryPointScreenRoute);
+        } catch (e) {
+          _showSnackbar("Error saving user data. Please try again.");
+          Navigator.of(context).pop();
+        }
+      }
+    });
+
+    // Cancel verification timer after 2 minutes
+    Future.delayed(const Duration(minutes: 2), () {
+      User? currentUser = FirebaseAuth.instance.currentUser;
+      if (currentUser != null && !currentUser.emailVerified) {
+        _verificationTimer?.cancel();
+        _showSnackbar("Email verification failed. Please try again.");
+        Navigator.of(context).pop();
+      }
+    });
+  }
 
 // Show snackbar for errors or messages
-void _showSnackbar(String message) {
-  ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(message)));
-}
+  void _showSnackbar(String message) {
+    ScaffoldMessenger.of(context)
+        .showSnackBar(SnackBar(content: Text(message)));
+  }
 
-@override
-void dispose() {
-  _verificationTimer?.cancel();
-  emailController.dispose();
-  passwordController.dispose();
-  fullnameController.dispose();
-  super.dispose();
-}
+  @override
+  void dispose() {
+    _verificationTimer?.cancel();
+    emailController.dispose();
+    passwordController.dispose();
+    fullnameController.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -182,7 +191,7 @@ void dispose() {
                     key: _formKey,
                     child: Column(
                       children: [
-                                        TextFormField(
+                        TextFormField(
                           controller: fullnameController,
                           validator: (value) {
                             if (value == null) {
@@ -195,13 +204,18 @@ void dispose() {
                           decoration: InputDecoration(
                             hintText: "Full Name",
                             prefixIcon: Padding(
-                              padding: const EdgeInsets.symmetric(vertical: defaultPadding * 0.75),
+                              padding: const EdgeInsets.symmetric(
+                                  vertical: defaultPadding * 0.75),
                               child: SvgPicture.asset(
                                 "assets/icons/Image.svg",
                                 height: 24,
                                 width: 24,
                                 colorFilter: ColorFilter.mode(
-                                  Theme.of(context).textTheme.bodyLarge!.color!.withOpacity(0.3),
+                                  Theme.of(context)
+                                      .textTheme
+                                      .bodyLarge!
+                                      .color!
+                                      .withOpacity(0.3),
                                   BlendMode.srcIn,
                                 ),
                               ),
@@ -212,7 +226,9 @@ void dispose() {
                         TextFormField(
                           controller: emailController,
                           validator: (value) {
-                            if (value == null || !RegExp(r'^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$').hasMatch(value)) {
+                            if (value == null ||
+                                !RegExp(r'^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$')
+                                    .hasMatch(value)) {
                               return 'Please enter a valid email';
                             }
                             return null;
@@ -222,13 +238,18 @@ void dispose() {
                           decoration: InputDecoration(
                             hintText: "Email address",
                             prefixIcon: Padding(
-                              padding: const EdgeInsets.symmetric(vertical: defaultPadding * 0.75),
+                              padding: const EdgeInsets.symmetric(
+                                  vertical: defaultPadding * 0.75),
                               child: SvgPicture.asset(
                                 "assets/icons/Message.svg",
                                 height: 24,
                                 width: 24,
                                 colorFilter: ColorFilter.mode(
-                                  Theme.of(context).textTheme.bodyLarge!.color!.withOpacity(0.3),
+                                  Theme.of(context)
+                                      .textTheme
+                                      .bodyLarge!
+                                      .color!
+                                      .withOpacity(0.3),
                                   BlendMode.srcIn,
                                 ),
                               ),
@@ -248,13 +269,18 @@ void dispose() {
                           decoration: InputDecoration(
                             hintText: "Password",
                             prefixIcon: Padding(
-                              padding: const EdgeInsets.symmetric(vertical: defaultPadding * 0.75),
+                              padding: const EdgeInsets.symmetric(
+                                  vertical: defaultPadding * 0.75),
                               child: SvgPicture.asset(
                                 "assets/icons/Lock.svg",
                                 height: 24,
                                 width: 24,
                                 colorFilter: ColorFilter.mode(
-                                  Theme.of(context).textTheme.bodyLarge!.color!.withOpacity(0.3),
+                                  Theme.of(context)
+                                      .textTheme
+                                      .bodyLarge!
+                                      .color!
+                                      .withOpacity(0.3),
                                   BlendMode.srcIn,
                                 ),
                               ),
@@ -262,55 +288,53 @@ void dispose() {
                           ),
                         ),
                         const SizedBox(height: defaultPadding),
-                          Row(
-                    children: [
-                      Checkbox(
-                        value: isChecked,
-                        onChanged: (value) {
-                          setState(() {
-                            isChecked = value!;
-                          });
-                        },
-                      ),
-                      Expanded(
-                        child: Text.rich(
-                          TextSpan(
-                            text: "I agree with the",
-                            children: [
-                              TextSpan(
-                                recognizer: TapGestureRecognizer()
-                                  ..onTap = () {
-                                    Navigator.pushNamed(context, termsOfServicesScreenRoute);
-                                  },
-                                text: " Terms of service ",
-                                style: const TextStyle(
-                                  color: primaryColor,
-                                  fontWeight: FontWeight.w500,
+                        Row(
+                          children: [
+                            Checkbox(
+                              value: isChecked,
+                              onChanged: (value) {
+                                setState(() {
+                                  isChecked = value!;
+                                });
+                              },
+                            ),
+                            Expanded(
+                              child: Text.rich(
+                                TextSpan(
+                                  text: "I agree with the",
+                                  children: [
+                                    TextSpan(
+                                      recognizer: TapGestureRecognizer()
+                                        ..onTap = () {
+                                          Navigator.pushNamed(context,
+                                              termsOfServicesScreenRoute);
+                                        },
+                                      text: " Terms of service ",
+                                      style: const TextStyle(
+                                        color: primaryColor,
+                                        fontWeight: FontWeight.w500,
+                                      ),
+                                    ),
+                                    const TextSpan(
+                                      text: "& privacy policy.",
+                                    ),
+                                  ],
                                 ),
                               ),
-                              const TextSpan(
-                                text: "& privacy policy.",
-                              ),
-                            ],
-                          ),
+                            )
+                          ],
                         ),
-                      )
-                    ],
-                  ),
                         const SizedBox(height: defaultPadding),
                         isLoading
-                          ? const Center(child: CircularProgressIndicator())
-                          : ElevatedButton(
-                              onPressed: isChecked ? _register : null,
-                              child: const Text("Sign Up"),
-                            ),
+                            ? const Center(child: CircularProgressIndicator())
+                            : ElevatedButton(
+                                onPressed: isChecked ? _register : null,
+                                child: const Text("Sign Up"),
+                              ),
                       ],
                     ),
                   ),
-                
-                
                   const SizedBox(height: defaultPadding * 2),
-                 
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [

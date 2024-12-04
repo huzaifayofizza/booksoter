@@ -43,64 +43,61 @@ class _AdminUserAccountState extends State<AdminUserAccount> {
       print('Error fetching users: $e');
     }
   }
+// Delete user from Firestore (Firebase Authentication doesn't allow deleting other users by email or UID)
+Future<void> _deleteUser(String uid) async {
+  try {
+    final firestore = FirebaseFirestore.instance;
+    final auth = FirebaseAuth.instance;
 
-  // Delete user from Firestore (Firebase Authentication doesn't allow deleting other users by email)
-  Future<void> _deleteUser(String email) async {
-    try {
-      final firestore = FirebaseFirestore.instance;
-
-      // Prevent deleting the currently logged-in user
-      final auth = FirebaseAuth.instance;
-      if (auth.currentUser?.email == email) {
-        ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-          content: Text('You cannot delete the currently logged-in user.'),
-        ));
-        return;
-      }
-
-      // Find user document in Firestore
-      final userDoc = await firestore
-          .collection('users')
-          .where('email', isEqualTo: email)
-          .get();
-      if (userDoc.docs.isEmpty) {
-        // If user does not exist in Firestore, display UID
-        final currentUser = auth.currentUser;
-        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-          content:
-              Text('Email not found. User UID: ${currentUser?.uid ?? "N/A"}'),
-        ));
-        return;
-      }
-
-      // If user exists, delete their document from Firestore
-      await userDoc.docs.first.reference.delete();
-
-      setState(() {
-        users.removeWhere((user) => user.email == email);
-      });
-
-      print('User deleted successfully.');
-    } catch (e) {
-      print('Error deleting user: $e');
+    // Prevent deleting the currently logged-in user
+    if (auth.currentUser?.uid == uid) {
+      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+        content: Text('You cannot delete the currently logged-in user.'),
+      ));
+      return;
     }
+
+    // Find user document in Firestore
+    final userDoc = await firestore.collection('users').doc(uid).get();
+    if (!userDoc.exists) {
+      // If user does not exist in Firestore, show a message
+      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+        content: Text('User not found.'),
+      ));
+      return;
+    }
+
+    // If user exists, delete their document from Firestore
+    await firestore.collection('users').doc(uid).delete();
+
+    setState(() {
+      users.removeWhere((user) => user.uid == uid);
+    });
+
+    ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+      content: Text('User deleted successfully from Firestore.'),
+    ));
+  } catch (e) {
+    print('Error deleting user: $e');
+    ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+      content: Text('Error deleting user.'),
+    ));
   }
+}
+
 
   // Change user role in Firestore
-  Future<void> _changeRole(String email, String newRole) async {
+  Future<void> _changeRole(String uid, String newRole) async {
     try {
       final firestore = FirebaseFirestore.instance;
-      final userDoc = await firestore
-          .collection('users')
-          .where('email', isEqualTo: email)
-          .get();
-      if (userDoc.docs.isNotEmpty) {
-        await userDoc.docs.first.reference.update({'role': newRole});
+      final userDoc = await firestore.collection('users').doc(uid).get();
+      if (userDoc.exists) {
+        await userDoc.reference.update({'role': newRole});
       }
 
       setState(() {
         // Update user role locally
-        final index = users.indexWhere((user) => user.email == email);
+        final index = users.indexWhere((user) => user.uid == uid);
         if (index != -1) {
           users[index].role = newRole;
         }
@@ -148,7 +145,7 @@ class _AdminUserAccountState extends State<AdminUserAccount> {
                               icon: const Icon(Icons.edit),
                               onPressed: () {
                                 // Handle role change
-                                _changeRole(user.email,
+                                _changeRole(user.uid,
                                     user.role == 'admin' ? 'user' : 'admin');
                               },
                             ),
@@ -156,7 +153,7 @@ class _AdminUserAccountState extends State<AdminUserAccount> {
                               icon: const Icon(Icons.delete),
                               onPressed: () {
                                 // Confirm before deleting
-                                _showDeleteConfirmation(user.email);
+                                _showDeleteConfirmation(user.uid);
                               },
                             ),
                           ],
@@ -174,7 +171,7 @@ class _AdminUserAccountState extends State<AdminUserAccount> {
   }
 
   // Show confirmation before deletion
-  void _showDeleteConfirmation(String email) {
+  void _showDeleteConfirmation(String uid) {
     showDialog(
       context: context,
       builder: (BuildContext context) {
@@ -191,7 +188,7 @@ class _AdminUserAccountState extends State<AdminUserAccount> {
             TextButton(
               child: const Text('Delete'),
               onPressed: () {
-                _deleteUser(email);
+                _deleteUser(uid);
                 Navigator.of(context).pop();
               },
             ),

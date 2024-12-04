@@ -196,6 +196,7 @@ class _LoginScreenState extends State<LoginScreen> {
           await userDoc.set({
             'email': null, // Guest users don't have emails
             'uid': uid,
+            'fullname': "Guest",
             'role': 'user', // Default role for guest users
             'createdAt': DateTime.now(),
           });

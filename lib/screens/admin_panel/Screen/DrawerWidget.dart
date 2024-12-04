@@ -2,6 +2,7 @@ import 'package:bookstore/screens/admin_panel/Screen/AdminOrderManage.dart';
 import 'package:bookstore/screens/admin_panel/Screen/BookInsertForm.dart';
 import 'package:bookstore/screens/admin_panel/Screen/BookView.dart';
 import 'package:bookstore/screens/admin_panel/Screen/adminUserAccount.dart';
+import 'package:bookstore/screens/admin_panel/Screen/chatroom.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:google_sign_in/google_sign_in.dart';
@@ -119,7 +120,8 @@ class _DrawerWidgetState extends State<DrawerWidget> {
                   onTap: () {
                     Navigator.push(
                       context,
-                      MaterialPageRoute(builder: (context) => const BookStoreView()),
+                      MaterialPageRoute(
+                          builder: (context) => const BookStoreView()),
                     );
                   },
                 ),
@@ -128,7 +130,8 @@ class _DrawerWidgetState extends State<DrawerWidget> {
                   onTap: () {
                     Navigator.push(
                       context,
-                      MaterialPageRoute(builder: (context) => const BookStoreAdmin()),
+                      MaterialPageRoute(
+                          builder: (context) => const BookStoreAdmin()),
                     );
                   },
                 ),
@@ -149,6 +152,16 @@ class _DrawerWidgetState extends State<DrawerWidget> {
                       context,
                       MaterialPageRoute(
                           builder: (context) => const AdminUserAccount()),
+                    );
+                  },
+                ),
+                _buildDrawerItem(
+                  title: 'Chat & Support',
+                  onTap: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => AdminChatRoomList()),
                     );
                   },
                 ),

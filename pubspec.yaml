@@ -55,6 +55,8 @@ dependencies:
   shared_preferences: ^2.3.3
   cloudinary_public: ^0.23.1
   order_tracker_zen: ^1.0.0+4
+  flutter_firebase_chat_core: ^1.6.8
+  stream_chat_flutter_core: ^8.2.0
 
 dev_dependencies:
   flutter_test:

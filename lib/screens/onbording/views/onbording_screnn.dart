@@ -113,7 +113,7 @@ class _OnBordingScreenState extends State<OnBordingScreen> {
                     (index) => Padding(
                       padding: const EdgeInsets.only(right: defaultPadding / 4),
                       child: DotIndicator(isActive: index == _pageIndex),
-                    ),
+                    ), 
                   ),
                   const Spacer(),
                   SizedBox(
