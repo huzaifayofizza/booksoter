@@ -3,6 +3,8 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
 class UserChatScreen extends StatefulWidget {
+  const UserChatScreen({super.key});
+
   @override
   _UserChatScreenState createState() => _UserChatScreenState();
 }
@@ -55,14 +57,14 @@ class _UserChatScreenState extends State<UserChatScreen> {
   Widget build(BuildContext context) {
     if (adminId == null) {
       return Scaffold(
-        appBar: AppBar(title: Text('Chat with Admin')),
-        body: Center(child: CircularProgressIndicator()),
+        appBar: AppBar(title: const Text('Chat with Admin')),
+        body: const Center(child: CircularProgressIndicator()),
       );
     }
 
     return Scaffold(
       appBar: AppBar(
-        title: Text('Help & Support'),
+        title: const Text('Help & Support'),
       ),
       body: Column(
         children: [
@@ -76,10 +78,10 @@ class _UserChatScreenState extends State<UserChatScreen> {
                   .snapshots(),
               builder: (context, snapshot) {
                 if (snapshot.connectionState == ConnectionState.waiting) {
-                  return Center(child: CircularProgressIndicator());
+                  return const Center(child: CircularProgressIndicator());
                 }
                 if (!snapshot.hasData || snapshot.data!.docs.isEmpty) {
-                  return Center(child: Text('No messages yet'));
+                  return const Center(child: Text('No messages yet'));
                 }
 
                 final messages = snapshot.data!.docs;
@@ -123,10 +125,10 @@ class _UserChatScreenState extends State<UserChatScreen> {
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 Text(message['text']),
-                                SizedBox(height: 4),
+                                const SizedBox(height: 4),
                                 Text(
                                   'Sent at: $messageTime',
-                                  style: TextStyle(
+                                  style: const TextStyle(
                                       fontSize: 10, color: Colors.grey),
                                 ),
                               ],
@@ -147,14 +149,14 @@ class _UserChatScreenState extends State<UserChatScreen> {
                 Expanded(
                   child: TextField(
                     controller: messageController,
-                    decoration: InputDecoration(
+                    decoration: const InputDecoration(
                       hintText: 'Type your message...',
                       border: OutlineInputBorder(),
                     ),
                   ),
                 ),
                 IconButton(
-                  icon: Icon(Icons.send),
+                  icon: const Icon(Icons.send),
                   onPressed: () async {
                     final messageText = messageController.text.trim();
                     if (messageText.isNotEmpty) {
@@ -197,7 +199,7 @@ class _UserChatScreenState extends State<UserChatScreen> {
         .add(message);
 
     // Update message to 'delivered' after sending
-    Future.delayed(Duration(seconds: 2), () async {
+    Future.delayed(const Duration(seconds: 2), () async {
       final lastMessage = await FirebaseFirestore.instance
           .collection('rooms')
           .doc(roomId)

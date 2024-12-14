@@ -117,7 +117,8 @@ class _SignUpScreenState extends State<SignUpScreen> {
             'fullname': fullnameController.text.trim(),
             'role': 'user', // Default role
             'createdAt': DateTime.now(),
-            'imageUrl': "",
+            'imageUrl':
+                "https://t3.ftcdn.net/jpg/06/03/30/74/360_F_603307418_jya3zntHWjXWn3WHn7FOpjFevXwnVP52.jpg",
           });
 
           // Save login status and role in SharedPreferences

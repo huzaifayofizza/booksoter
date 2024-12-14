@@ -4,11 +4,13 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:bookstore/screens/admin_panel/Screen/chatscreen.dart';
 
 class AdminChatRoomList extends StatelessWidget {
+  const AdminChatRoomList({super.key});
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Active Chats'),
+        title: const Text('Active Chats'),
         centerTitle: true,
       ),
       body: StreamBuilder<QuerySnapshot>(
@@ -17,11 +19,11 @@ class AdminChatRoomList extends StatelessWidget {
             .snapshots(), // Listen to changes in the rooms collection
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
-            return Center(child: CircularProgressIndicator());
+            return const Center(child: CircularProgressIndicator());
           }
 
           if (!snapshot.hasData || snapshot.data!.docs.isEmpty) {
-            return Center(child: Text('No active chats'));
+            return const Center(child: Text('No active chats'));
           }
 
           final rooms = snapshot.data!.docs;
@@ -41,41 +43,39 @@ class AdminChatRoomList extends StatelessWidget {
                     .get(),
                 builder: (context, userSnapshot) {
                   if (!userSnapshot.hasData) {
-                    return ListTile(title: Text('Loading user data...'));
+                    return const ListTile(title: Text('Loading user data...'));
                   }
 
                   if (userSnapshot.hasError) {
                     return ListTile(
-                      title: Text('Error loading user'),
+                      title: const Text('Error loading user'),
                       subtitle: Text(userSnapshot.error.toString()),
                     );
                   }
 
                   final userData = userSnapshot.data!;
-                  final userName = userData['fullname'] != null
-                      ? userData['fullname']
-                      : 'Guest'; // Default to 'Guest' if fullname is not found
+                  final userName = userData['fullname'] ?? 'Guest'; // Default to 'Guest' if fullname is not found
                   final userAvatar = userData['imageUrl'] ??
                       'https://www.example.com/default-avatar.png';
 
                   return Card(
-                    margin: EdgeInsets.symmetric(vertical: 8, horizontal: 16),
+                    margin: const EdgeInsets.symmetric(vertical: 8, horizontal: 16),
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(10),
                     ),
                     elevation: 5,
                     child: ListTile(
                       contentPadding:
-                          EdgeInsets.symmetric(vertical: 12, horizontal: 16),
+                          const EdgeInsets.symmetric(vertical: 12, horizontal: 16),
                       leading: CircleAvatar(
                         radius: 30,
                         backgroundImage:
                             NetworkImage(userAvatar), // Avatar image
                         onBackgroundImageError: (_, __) =>
-                            Icon(Icons.account_circle, size: 40),
+                            const Icon(Icons.account_circle, size: 40),
                       ),
                       title: Text(userName,
-                          style: TextStyle(
+                          style: const TextStyle(
                               fontSize: 18, fontWeight: FontWeight.bold)),
                       subtitle: StreamBuilder<QuerySnapshot>(
                         stream: FirebaseFirestore.instance
@@ -88,7 +88,7 @@ class AdminChatRoomList extends StatelessWidget {
                         builder: (context, messageSnapshot) {
                           if (!messageSnapshot.hasData ||
                               messageSnapshot.data!.docs.isEmpty) {
-                            return Text('No messages yet');
+                            return const Text('No messages yet');
                           }
 
                           final lastMessage =
@@ -108,7 +108,7 @@ class AdminChatRoomList extends StatelessWidget {
                               Text(
                                 time,
                                 style:
-                                    TextStyle(fontSize: 12, color: Colors.grey),
+                                    const TextStyle(fontSize: 12, color: Colors.grey),
                               ),
                             ],
                           );
@@ -136,8 +136,8 @@ class AdminChatRoomList extends StatelessWidget {
         onPressed: () {
           // Implement functionality for creating a new chat or any admin action
         },
-        child: Icon(Icons.add),
         tooltip: 'Create New Chat',
+        child: Icon(Icons.add),
       ),
     );
   }

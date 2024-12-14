@@ -1,10 +1,8 @@
 import 'package:bookstore/models/product_model.dart';
 import 'package:bookstore/screens/home/views/BookCategory_screen.dart';
 
-import 'package:bookstore/screens/product/views/orderPlaced.dart';
 import 'package:flutter/material.dart';
 import 'package:bookstore/entry_point.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 import 'screen_export.dart';
 

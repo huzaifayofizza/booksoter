@@ -198,6 +198,8 @@ class _LoginScreenState extends State<LoginScreen> {
             'uid': uid,
             'fullname': "Guest",
             'role': 'user', // Default role for guest users
+            'imageUrl':
+                'https://t3.ftcdn.net/jpg/06/03/30/74/360_F_603307418_jya3zntHWjXWn3WHn7FOpjFevXwnVP52.jpg',
             'createdAt': DateTime.now(),
           });
         }

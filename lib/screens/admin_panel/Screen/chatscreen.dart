@@ -5,7 +5,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 class AdminChatScreen extends StatefulWidget {
   final String roomId;
 
-  const AdminChatScreen({Key? key, required this.roomId}) : super(key: key);
+  const AdminChatScreen({super.key, required this.roomId});
 
   @override
   _AdminChatScreenState createState() => _AdminChatScreenState();
@@ -18,7 +18,7 @@ class _AdminChatScreenState extends State<AdminChatScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Chat Room'),
+        title: const Text('Chat Room'),
       ),
       body: Column(
         children: [
@@ -32,10 +32,10 @@ class _AdminChatScreenState extends State<AdminChatScreen> {
                   .snapshots(),
               builder: (context, snapshot) {
                 if (snapshot.connectionState == ConnectionState.waiting) {
-                  return Center(child: CircularProgressIndicator());
+                  return const Center(child: CircularProgressIndicator());
                 }
                 if (!snapshot.hasData || snapshot.data!.docs.isEmpty) {
-                  return Center(child: Text('No messages yet'));
+                  return const Center(child: Text('No messages yet'));
                 }
 
                 final messages = snapshot.data!.docs;
@@ -90,10 +90,10 @@ class _AdminChatScreenState extends State<AdminChatScreen> {
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 Text(message['text']),
-                                SizedBox(height: 4),
+                                const SizedBox(height: 4),
                                 Text(
                                   'Sent at: $messageTime',
-                                  style: TextStyle(
+                                  style: const TextStyle(
                                       fontSize: 10, color: Colors.grey),
                                 ),
                               ],
@@ -124,14 +124,14 @@ class _AdminChatScreenState extends State<AdminChatScreen> {
                 Expanded(
                   child: TextField(
                     controller: messageController,
-                    decoration: InputDecoration(
+                    decoration: const InputDecoration(
                       hintText: 'Type your message...',
                       border: OutlineInputBorder(),
                     ),
                   ),
                 ),
                 IconButton(
-                  icon: Icon(Icons.send),
+                  icon: const Icon(Icons.send),
                   onPressed: () async {
                     final messageText = messageController.text.trim();
                     if (messageText.isNotEmpty) {
@@ -166,7 +166,7 @@ class _AdminChatScreenState extends State<AdminChatScreen> {
         .add(message);
 
     // Optionally update status to "delivered" after a delay
-    Future.delayed(Duration(seconds: 2), () async {
+    Future.delayed(const Duration(seconds: 2), () async {
       final lastMessage = await FirebaseFirestore.instance
           .collection('rooms')
           .doc(widget.roomId)
